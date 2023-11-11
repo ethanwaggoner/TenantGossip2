@@ -36,11 +36,18 @@ watch(postId, (newVal) => {
     Back
   </div>
   <div class="center">
-    <h1>{{postDetails.title}}</h1>
-    <p>{{postDetails.body}}</p>
+    <h1>{{ postDetails.title }}</h1>
+    <p>{{ postDetails.body }}</p>
+    <div class="comments-section w-100">
+      <h3>Comments ({{ postDetails.comments_count }})</h3>
+      <div class="comment" v-for="comment in postDetails.comments" :key="comment.id">
+        <p>{{ comment.body }}</p>
+      </div>
+    </div>
   </div>
 </div>
 </template>
+
 
 <style scoped>
 .container {
@@ -79,7 +86,6 @@ watch(postId, (newVal) => {
   background: rgba(255, 255, 255, 0.2);
 }
 
-/* Title and body text styling */
 h1 {
   font-size: 2rem;
   font-weight: 700;
@@ -101,6 +107,27 @@ p {
   color: #E6E6E6;
 }
 
+.comments-section {
+  margin-top: 20px;
+  padding: 15px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.comment {
+  background: rgba(255, 255, 255, 0.05);
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  color: #E6E6E6;
+}
+
+h3 {
+  color: #FFC107;
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+}
 
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(20px); }

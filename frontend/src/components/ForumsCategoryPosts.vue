@@ -37,7 +37,7 @@ watch(catId, (newVal, oldVal) => {
           <p>{{ post.body }}</p>
          </div>
         <div class="likes">
-          <small> {{ post.like_count }} Likes</small>
+          <small> {{ post.like_count }} Likes {{ post.comments_count }} Comments</small>
         </div>
       </div>
   </div>
