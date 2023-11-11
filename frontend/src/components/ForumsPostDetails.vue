@@ -30,7 +30,7 @@ watch(postId, (newVal) => {
 </script>
 
 <template>
-
+<h2>Post Details</h2>
 <div class="container h-75">
   <div class="back w-25" @click="navigateBack(postDetails.category.id)">
     Back
@@ -85,6 +85,14 @@ h1 {
   font-weight: 700;
   margin-bottom: 10px;
   color: #FFFFFF;
+}
+
+h2 {
+  text-align: center;
+  color: white;
+  font-size: 30px;
+  font-weight: 600;
+  margin-bottom: 20px;
 }
 
 p {
