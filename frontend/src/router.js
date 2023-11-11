@@ -1,50 +1,68 @@
 import { createWebHistory, createRouter } from 'vue-router'
 
-import HomepageView from "@/views/HomepageView.vue";
-import TermsAgreementView from "@/views/TermsAgreementView.vue";
-import ResourcesView from "@/views/ResourcesView.vue";
-import ForumsCategoriesView from "@/views/ForumsCategoriesView.vue";
-
-
+// Lazy load all route components
+const HomepageView = () => import("@/views/HomepageView.vue");
+const TermsView = () => import("@/views/TermsAgreementView.vue");
+const ResourcesView = () => import("@/views/ResourcesView.vue");
+const ForumsCategoriesView = () => import("@/views/ForumsCategoriesView.vue");
+const ForumsCategoryPosts = () => import('@/components/ForumsCategoryPosts.vue');
+const ForumsPostDetails = () => import('@/components/ForumsPostDetails.vue');
+const NotFoundView = () => import('@/views/NotFoundView.vue');
 const routes = [
-    {
-      path: '/',
-      name: 'Home',
-      component: HomepageView,
-    },
-    {
-      path: '/terms',
-      name: 'Terms',
-      component: TermsAgreementView,
-    },
-    {
-      path: '/resources',
-      name: 'Resources',
-      component: ResourcesView,
-    },
-    {
-      path: '/forums',
-      name: 'Forums',
-      component: ForumsCategoriesView,
-      children: [
-        {
-          path: 'category/:categoryId',
-          name: 'CategoryPosts',
-          component: () => import('@/components/ForumsCategoryPosts.vue'),
-        },
-        {
-          path: 'category/:categoryId/post/:postId',
-          name: 'PostDetails',
-          component: () => import('@/components/ForumsPostDetails.vue'),
-        },
-      ]
-    },
-
-]
+  {
+    path: '/',
+    name: 'Home',
+    component: HomepageView,
+    meta: { title: 'Home Page' },
+  },
+  {
+    path: '/terms',
+    name: 'Terms',
+    component: TermsView,
+    meta: { title: 'Terms and Conditions' },
+  },
+  {
+    path: '/resources',
+    name: 'Resources',
+    component: ResourcesView,
+    meta: { title: 'Renter Resources' },
+  },
+  {
+    path: '/forums',
+    name: 'Forums',
+    component: ForumsCategoriesView,
+    meta: { title: 'Forums' },
+    children: [
+      {
+        path: 'category/:categoryId',
+        name: 'CategoryPosts',
+        component: ForumsCategoryPosts,
+        meta: { title: 'Forum Category Posts' },
+      },
+      {
+        path: 'category/:categoryId/post/:postId',
+        name: 'PostDetails',
+        component: ForumsPostDetails,
+        meta: { title: 'Forum Post Details' },
+      },
+    ]
+  },
+  {
+    path: '/:pathMatch(.*)*',
+    name: 'NotFound',
+    component: NotFoundView,
+    meta: { title: 'Page Not Found' },
+  },
+];
 
 const router = createRouter({
   history: createWebHistory(),
   routes,
-})
+});
 
-export default router
+router.beforeEach((to, from, next) => {
+  document.title = to.meta.title || 'Tenant Gossip';
+  next();
+});
+
+export default router;

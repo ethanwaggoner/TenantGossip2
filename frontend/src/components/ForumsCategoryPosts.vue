@@ -28,6 +28,7 @@ watch(catId, (newVal, oldVal) => {
 </script>
 
 <template>
+<h2>Posts</h2>
 <div class="container h-100">
   <div class="row justify-content-center">
       <div v-for="post in posts" :key="post.id" class="category-card mb-4" @click="navigateToPostDetails(post.id)">
@@ -60,6 +61,13 @@ watch(catId, (newVal, oldVal) => {
   box-shadow: 0 15px 25px rgba(0,0,0,0.3);
 }
 
+h2 {
+  text-align: center;
+  color: white;
+  font-size: 30px;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
 h5 {
   font-weight: 700;
   font-size: 1.4rem;

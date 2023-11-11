@@ -16,6 +16,7 @@ onMounted(() => {
 </script>
 
 <template>
+<h2>Categories</h2>
 <div class="container h-100">
   <div class="row">
       <div v-for="category in forumsStore.categories" :key="category.id" class="category-card mb-4" @click="navigateToPosts(category.id)">
@@ -23,6 +24,9 @@ onMounted(() => {
           <h5>⬤ {{ category.name }}</h5>
           <p>{{ category.description }}</p>
          </div>
+        <div class="post-count">
+          <small>Posts: {{ category.posts_count }}</small>
+        </div>
       </div>
   </div>
 </div>
@@ -41,6 +45,7 @@ onMounted(() => {
   justify-content: space-between;
   overflow: hidden;
   position: relative;
+  animation: fadeIn 0.6s ease-out;
 }
 
 .category-card:hover {
@@ -48,11 +53,23 @@ onMounted(() => {
   box-shadow: 0 15px 25px rgba(0,0,0,0.3);
 }
 
+.post-count {
+  text-align: right;
+}
+
 h5 {
   font-weight: 700;
   font-size: 1.4rem;
   color: #FFFFFF;
   margin-bottom: 10px;
+}
+
+h2 {
+  text-align: center;
+  color: white;
+  font-size: 30px;
+  font-weight: 600;
+  margin-bottom: 20px;
 }
 
 p {
@@ -70,10 +87,6 @@ p {
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(20px); }
   to { opacity: 1; transform: translateY(0); }
-}
-
-.category-card {
-  animation: fadeIn 0.6s ease-out;
 }
 
 @media (max-width: 768px) {
