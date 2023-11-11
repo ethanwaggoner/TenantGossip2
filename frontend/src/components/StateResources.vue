@@ -263,86 +263,144 @@ const filteredCards = computed(() => {
 </script>
 
 <template>
-<input type="text" placeholder="Find your state" v-model="search"/>
-<div class="container">
-  <div class="card" v-for="state in filteredCards" :key="state.label">
-    <h3>{{ state.label }}</h3>
-    <img :src="state.image" alt="State flower">
-    <ul class="links">
-      <li v-for="link in state.links">
-        <a :href="link">{{ link }}</a>
-      </li>
-    </ul>
+  <div class="search-container">
+    <input type="text" placeholder="Find your state" v-model="search" class="search-input"/>
   </div>
-</div>
+  <div class="container">
+    <div class="card" v-for="state in filteredCards" :key="state.label">
+      <div class="card-header">
+        <img :src="state.image" :alt="`Image of ${state.label}`">
+        <h3>{{ state.label }}</h3>
+      </div>
+      <div class="card-body">
+        <ul class="links">
+          <li v-for="link in state.links" :key="link">
+            <a :href="link">{{ link }}</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
 </template>
+
+
 
 <style scoped>
 .container {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  grid-gap: 10px;
-  padding: 10px;
-  height:  65vh;
-  width: 70vw;
-  overflow-y: scroll;
-}
-.card {
-  display: block;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  height: 30vh;
-  padding: 5px;
-  color: antiquewhite;
-  font-family: Candara, sans-serif;
-  font-weight: bold;
-  border-radius: 10px;
-  background: linear-gradient(180deg, #4FC0D0, #1B6B93);
-  overflow: hidden;
-  border: #1a1a1a 2px solid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  grid-gap: 20px;
+  padding: 20px;
+  width: 100%;
+  overflow-y: auto;
 }
 
-img {
-  scale: 40%;
+.card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border-radius: 15px;
+  background: linear-gradient(135deg, #8E2DE2 0%, #4A00E0 100%);
+  color: white;
+  font-family: 'Arial', sans-serif;
+  font-weight: bold;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  transition: all 0.3s ease;
+  overflow: hidden;
+}
+
+.card-header {
+  position: relative;
+  text-align: center;
+  padding: 10px;
+}
+
+.card-header img {
   width: 100%;
-  height: 100%;
-  border-radius: 20px;
+  height: 150px;
   object-fit: cover;
-  border: #1a1a1a 2px solid;
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+}
+
+.card-header h3 {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: white;
+  background-color: rgba(0, 0, 0, 0.6);
+  width: calc(100% - 20px);
+  padding: 5px;
+  border-radius: 10px;
+}
+
+.card-body {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 15px;
+  border-bottom-left-radius: 15px;
+  border-bottom-right-radius: 15px;
 }
 
 .links {
-  display: block;
-  flex-direction: column;
-  justify-content: left;
-  align-items: center;
-  padding: 10px;
-  color: antiquewhite;
-  font-size: 16px;
-  text-decoration: none;
+  list-style-type: none;
+  padding: 0;
 }
+
+.links li {
+  margin-bottom: 10px;
+}
+
 a {
-  color: antiquewhite;
+  color: #FFC107;
+  transition: color 0.3s ease;
+}
+
+a:hover {
+  color: #FFFFFF;
+  text-decoration: underline;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
+
+img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
+.links {
+  padding: 10px;
+  list-style-type: none;
+}
+
+a {
+  color: #FFC107;
   text-decoration: none;
 }
+
 a:hover {
   text-decoration: underline;
 }
 
-input {
-  margin-top: 25px;
-  margin-left: 16.2vw;
-  position: relative;
-  height: 5vh;
-  width: 68vw;
-  border-radius: 10px;
-  border: #1a1a1a 2px solid;
-  font-size: 20px;
-  font-family: Candara, sans-serif;
+.search-container {
+  display: flex;
+  justify-content: center;
+  padding: 20px;
 }
 
-input:focus {
+.search-input {
+  width: 50%;
+  border-radius: 10px;
+  border: 2px solid #4A00E0;
+  font-size: 16px;
+  padding: 10px;
+}
+
+.search-input:focus {
   outline: none;
+  border-color: #8E2DE2;
 }
 </style>

@@ -44,24 +44,58 @@ watch(postId, (newVal) => {
 
 <style scoped>
 .container {
-  background: linear-gradient(180deg, #4FC0D0, #1B6B93);
-  border: #1a1a1a 2px solid;
+  background: linear-gradient(135deg, #8E2DE2 0%, #4A00E0 100%);
   color: white;
-  margin-top: 40px;
   border-radius: 15px;
   box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  padding: 20px;
+  overflow: hidden;
+  animation: fadeIn 0.6s ease-out;
 }
+
 .center {
-  justify-content: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  animation: fadeIn 0.6s ease-out;
 }
+
 .back {
-  margin-top: 20px;
-  justify-content: left;
-  background: linear-gradient(to bottom, #4FC0D0, #1B6B93);
-  color: antiquewhite;
-  font-size: 24px;
-  padding: 20px 20px 20px 20px;
-  border-radius: 10px;
-  border: #1a1a1a 2px solid;
+  align-self: flex-start;
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  font-size: 1rem;
+  padding: 10px 15px;
+  border-radius: 8px;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-bottom: 20px;
+  animation: fadeIn 0.6s ease-out;
+}
+
+.back:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* Title and body text styling */
+h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+  color: #FFFFFF;
+}
+
+p {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #E6E6E6;
+}
+
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 </style>

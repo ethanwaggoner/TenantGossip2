@@ -16,7 +16,7 @@ onMounted(() => {
 </script>
 
 <template>
-<div class="container h-75">
+<div class="container h-100">
   <div class="row">
       <div v-for="category in forumsStore.categories" :key="category.id" class="category-card mb-4" @click="navigateToPosts(category.id)">
          <div>
@@ -30,28 +30,59 @@ onMounted(() => {
 
 <style scoped>
 .category-card {
-  background: linear-gradient(180deg, #4FC0D0, #1B6B93);
-  border: #1a1a1a 2px solid;
+  background: linear-gradient(135deg, #8E2DE2 0%, #4A00E0 100%);
   color: white;
-  padding: 10px;
+  padding: 20px;
   border-radius: 15px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-  transition: 0.3s;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+  transition: all 0.4s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+  position: relative;
 }
 
 .category-card:hover {
-  background: linear-gradient(180deg, #1B6B93, #4FC0D0);
-  transform: scale(1.02);
-  box-shadow: 0 8px 12px rgba(0,0,0,0.3);
-  cursor: pointer;
+  transform: translateY(-5px) rotate(-1deg);
+  box-shadow: 0 15px 25px rgba(0,0,0,0.3);
 }
 
 h5 {
-  font-weight: bold;
+  font-weight: 700;
+  font-size: 1.4rem;
+  color: #FFFFFF;
+  margin-bottom: 10px;
 }
 
-.container {
-  padding-top: 40px;
-  overflow-y: scroll;
+p {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #E6E6E6;
 }
-</style>1
+
+.row {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-gap: 20px;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.category-card {
+  animation: fadeIn 0.6s ease-out;
+}
+
+@media (max-width: 768px) {
+  .row {
+    grid-template-columns: 1fr;
+  }
+  .category-card {
+    padding: 15px;
+  }
+}
+
+</style>

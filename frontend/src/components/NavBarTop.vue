@@ -29,20 +29,17 @@
 </template>
 
 <style scoped>
-
 nav {
-  background: linear-gradient(180deg, #4FC0D0, #1B6B93);
-  opacity: 1.0;
-  color: antiquewhite;
+  background: linear-gradient(135deg, #8E2DE2 0%, #4A00E0 100%);
+  color: white;
   font-weight: 800;
   display: flex;
   padding: 10px;
-  border-radius: 10px;
-  margin-bottom: 10px;
-  margin-top: 10px;
-  font-family: Candara, sans-serif;
-  border: #1a1a1a 2px solid;
-
+  border-radius: 15px;
+  margin: 20px 0;
+  font-family: 'Arial', sans-serif;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  transition: all 0.3s ease;
 }
 
 .nav-links {
@@ -51,29 +48,22 @@ nav {
   width: 100%;
 }
 
-img {
-  width: 100px;
-  height: 100px;
-}
-
-h2, router-link {
+.nav-links h2, .nav-links router-link {
   padding: 15px;
-  font-size: 25px;
+  font-size: 20px;
   margin: 0;
   transition: color 0.3s;
+  color: #FFFFFF;
 }
 
-h2.active {
-  color: #A2FF86;
-}
-
-h2:hover {
-  color: #A2FF86;
+.nav-links h2:hover, .nav-links router-link:hover {
+  color: #FFC107;
   cursor: pointer;
 }
 
 .divider {
-  border-right: 2px solid #1a1a1a;
+  border-right: 2px solid #FFFFFF;
+  opacity: 0.5;
 }
 
 </style>

@@ -26,17 +26,38 @@
 
 <style scoped>
 .summary {
-  background: linear-gradient(180deg, #4FC0D0, #1B6B93);
+  background: linear-gradient(135deg, #8E2DE2 0%, #4A00E0 100%);
   width: 65%;
   height: 75%;
-  margin: 75px auto 0;
-  color: antiquewhite;
-  opacity: 1.0;
-  border-radius: 10px;
-  border: 2px solid #1a1a1a;
+  margin: 10px auto;
+  color: white;
+  border-radius: 15px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
   font-size: 18px;
-  font-family: Candara, sans-serif;
-  font-weight: 800;
-  padding: 50px 150px 25px 150px;
+  font-family: 'Arial', sans-serif;
+  font-weight: 700;
+  padding: 40px;
+  overflow-y: auto;
+  animation: fadeIn 0.6s ease-out;
 }
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.summary h1, .summary h2 {
+  color: #FFC107;
+  margin-bottom: 20px;
+}
+
+.summary p, .summary ul {
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+.summary ul {
+  list-style: inside;
+}
+
 </style>

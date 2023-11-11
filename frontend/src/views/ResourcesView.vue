@@ -4,6 +4,8 @@ import FederalResources from "@/components/FederalResources.vue";
 </script>
 
 <template>
-<FederalResources />
-<StateResources />
+<div class="container col-8">
+  <FederalResources />
+  <StateResources />
+</div>
 </template>

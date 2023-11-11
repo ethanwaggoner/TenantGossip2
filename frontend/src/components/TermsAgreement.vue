@@ -55,50 +55,42 @@
 
 <style scoped>
 .container {
-  color: antiquewhite;
+  color: white;
   font-size: 18px;
-  font-family: Candara, sans-serif;
-  padding: 50px 100px 0 100px;
-  opacity: 1.0;
-  position: relative;
-  width: 1000px;
-  height: 90vh;
-  background: linear-gradient(180deg, #4FC0D0, #1B6B93);
-  border: #1a1a1a 2px solid;
-  border-radius: 5px;
+  font-family: 'Arial', sans-serif;
+  padding: 20px;
+  background: linear-gradient(135deg, #8E2DE2 0%, #4A00E0 100%);
+  border-radius: 15px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
   overflow-y: auto;
+  transition: all 0.3s ease;
+  animation: fadein 0.3s ease;
 }
 
 .buttons {
-  display: inline-flex;
-  justify-content: center;
-
+  display: flex;
+  justify-content: space-around;
+  margin-top: 20px;
 }
-.agree-button {
-  margin-left: 600px;
-  background: linear-gradient(to bottom, #4FC0D0, #1B6B93);
-  color: antiquewhite;
-  font-size: 24px;
-  padding: 20px 20px 20px 20px;
+
+.back-button, .agree-button {
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  font-size: 20px;
+  padding: 15px 20px;
   border-radius: 10px;
-  border: #1a1a1a 2px solid;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
 }
 
-.back-button {
-  background: linear-gradient(to bottom, #4FC0D0, #1B6B93);
-  color: antiquewhite;
-  font-size: 24px;
-  padding: 20px 20px 20px 20px;
-  border-radius: 10px;
-  border: #1a1a1a 2px solid;
+.back-button:hover, .agree-button:hover {
+  background: rgba(255, 255, 255, 0.2);
+  color: #FFC107;
+}
 
-}
-.back-button:hover {
-  color: #A2FF86;
-  cursor: pointer;
-}
-.agree-button:hover {
-  color: #A2FF86;
-  cursor: pointer;
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 </style>

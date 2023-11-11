@@ -3,5 +3,7 @@ import TermsAgreement from "@/components/TermsAgreement.vue";
 </script>
 
 <template>
-<TermsAgreement />
+<div class="container col-8">
+  <TermsAgreement />
+</div>
 </template>
