@@ -56,16 +56,21 @@ watch(catId, (newVal, oldVal) => {
       </div>
     </div>
   </div>
-
-  <div class="pagination">
-    <button @click="goToPreviousPage" :disabled="currentPage === 1">Previous</button>
-    <span>Page {{ currentPage }} of {{ totalPages }}</span>
-    <button @click="goToNextPage" :disabled="currentPage === totalPages">Next</button>
-  </div>
+</div>
+<div class="pagination">
+<button @click="goToPreviousPage" :disabled="currentPage === 1">Previous</button>
+<span>Page {{ currentPage }} of {{ totalPages }}</span>
+<button @click="goToNextPage" :disabled="currentPage === totalPages">Next</button>
 </div>
 </template>
 
 <style scoped>
+.container {
+  max-height: 75vh;
+  overflow-y: auto;
+  padding: 20px;
+}
+
 .category-card {
   background: linear-gradient(135deg, #8E2DE2 0%, #4A00E0 100%);
   color: white;
