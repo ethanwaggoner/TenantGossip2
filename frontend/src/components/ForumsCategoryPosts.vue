@@ -1,5 +1,5 @@
 <script setup>
-import {computed, onMounted, watch} from 'vue';
+import { computed, onMounted, watch, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import router from "@/router";
 import { useForumsStore } from "@/store";
@@ -7,39 +7,60 @@ import { useForumsStore } from "@/store";
 const route = useRoute();
 const catId = computed(() => route.params.categoryId);
 const forumsStore = useForumsStore();
+const currentPage = ref(1);
 
 const posts = computed(() => forumsStore.posts[catId.value] || []);
+const totalPages = computed(() => forumsStore.pagination.totalPages);
 
-function navigateToPostDetails(PostId) {
-  router.push({ name: "PostDetails", params: { postId: PostId, categoryId: catId.value } });
+function navigateToPostDetails(postId) {
+  router.push({ name: "PostDetails", params: { postId, categoryId: catId.value } });
 }
 
-function fetchPosts() {
-  forumsStore.fetchPosts(catId.value);
+function fetchPosts(page = 1) {
+  forumsStore.fetchPosts(catId.value, page);
+  currentPage.value = page;
 }
 
-onMounted(fetchPosts);
+function goToNextPage() {
+  if (currentPage.value < totalPages.value) {
+    fetchPosts(currentPage.value + 1);
+  }
+}
+
+function goToPreviousPage() {
+  if (currentPage.value > 1) {
+    fetchPosts(currentPage.value - 1);
+  }
+}
+
+onMounted(() => fetchPosts(currentPage.value));
 
 watch(catId, (newVal, oldVal) => {
-  if (newVal!== oldVal) {
-    fetchPosts();
+  if (newVal !== oldVal) {
+    fetchPosts(1);
   }
-})
+});
 </script>
 
 <template>
 <h2>Posts</h2>
 <div class="container h-100">
   <div class="row justify-content-center">
-      <div v-for="post in posts" :key="post.id" class="category-card mb-4" @click="navigateToPostDetails(post.id)">
-         <div>
-          <h5>{{ post.title }}</h5>
-          <p>{{ post.body }}</p>
-         </div>
-        <div class="likes">
-          <small> {{ post.like_count }} Likes {{ post.comments_count }} Comments</small>
-        </div>
+    <div v-for="post in posts" :key="post.id" class="category-card mb-4" @click="navigateToPostDetails(post.id)">
+      <div>
+        <h5>{{ post.title }}</h5>
+        <p>{{ post.body }}</p>
       </div>
+      <div class="likes">
+        <small> {{ post.like_count }} Likes {{ post.comments_count }} Comments</small>
+      </div>
+    </div>
+  </div>
+
+  <div class="pagination">
+    <button @click="goToPreviousPage" :disabled="currentPage === 1">Previous</button>
+    <span>Page {{ currentPage }} of {{ totalPages }}</span>
+    <button @click="goToNextPage" :disabled="currentPage === totalPages">Next</button>
   </div>
 </div>
 </template>
@@ -112,4 +133,31 @@ p {
   }
 }
 
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.pagination button {
+  padding: 5px 10px;
+  margin: 0 5px;
+  background-color: #4A00E0;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.pagination button:disabled {
+  background-color: grey;
+  cursor: default;
+}
+
+.pagination span {
+  margin: 0 10px;
+  color: white;
+}
 </style>

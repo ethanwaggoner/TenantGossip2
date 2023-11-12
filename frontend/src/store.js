@@ -9,6 +9,12 @@ export const useForumsStore = defineStore('forums', {
         postDetails: {},
         isLoading: false,
         error: null,
+        pagination: {
+            currentPage: 1,
+            totalPages: 0,
+            pageSize: 6,
+            totalPosts: 0,
+        }
     }),
     actions: {
         async fetchCategories() {
@@ -23,17 +29,22 @@ export const useForumsStore = defineStore('forums', {
                 this.isLoading = false;
             }
         },
-        async fetchPosts(categoryId) {
+         async fetchPosts(categoryId, page = 1) {
             try {
                 this.isLoading = true;
-                if (!this.posts[categoryId]) {
-                    const response = await fetch(`http://127.0.0.1:8000/api/posts/?category_id=${categoryId}`);
-                    if (!response.ok) throw new Error('Network response was not ok');
-                    const postsData = await response.json();
-                    this.$patch(state => {
-                        state.posts[categoryId] = postsData
-                    });
-                }
+                const url = `http://127.0.0.1:8000/api/posts/?category_id=${categoryId}&page=${page}`;
+                const response = await fetch(url);
+                if (!response.ok) throw new Error('Network response was not ok');
+                const data = await response.json();
+                this.$patch(state => {
+                    state.posts[categoryId] = data.results;
+                    state.pagination = {
+                        currentPage: page,
+                        totalPages: Math.ceil(data.count / state.pagination.pageSize),
+                        pageSize: state.pagination.pageSize,
+                        totalItems: data.count
+                    };
+                });
                 this.currentCategoryID = categoryId;
             } catch (error) {
                 this.error = error;

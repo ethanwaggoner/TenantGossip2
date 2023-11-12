@@ -8,6 +8,7 @@ const ForumsCategoriesView = () => import("@/views/ForumsCategoriesView.vue");
 const ForumsCategoryPosts = () => import('@/components/ForumsCategoryPosts.vue');
 const ForumsPostDetails = () => import('@/components/ForumsPostDetails.vue');
 const NotFoundView = () => import('@/views/NotFoundView.vue');
+
 const routes = [
   {
     path: '/',
