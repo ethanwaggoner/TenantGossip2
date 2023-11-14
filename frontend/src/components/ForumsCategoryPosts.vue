@@ -2,7 +2,7 @@
 import { computed, onMounted, watch, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import router from "@/router";
-import { useForumsStore } from "@/store";
+import { useForumsStore } from "@/store/forumsStore";
 
 const route = useRoute();
 const catId = computed(() => route.params.categoryId);
@@ -58,9 +58,9 @@ watch(catId, (newVal, oldVal) => {
   </div>
 </div>
 <div class="pagination">
-<button @click="goToPreviousPage" :disabled="currentPage === 1">Previous</button>
-<span>Page {{ currentPage }} of {{ totalPages }}</span>
-<button @click="goToNextPage" :disabled="currentPage === totalPages">Next</button>
+  <button @click="goToPreviousPage" :disabled="currentPage === 1">Previous</button>
+  <span>Page {{ currentPage }} of {{ totalPages }}</span>
+  <button @click="goToNextPage" :disabled="currentPage === totalPages">Next</button>
 </div>
 </template>
 

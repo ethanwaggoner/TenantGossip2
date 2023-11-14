@@ -1,7 +1,7 @@
 <script setup>
 import {computed, onMounted, watch} from 'vue';
 import { useRoute } from 'vue-router';
-import { useForumsStore } from "@/store";
+import { useForumsStore } from "@/store/forumsStore";
 import router from "@/router";
 
 const route = useRoute();
@@ -31,7 +31,7 @@ watch(postId, (newVal) => {
 
 <template>
 <h2>Post Details</h2>
-<div class="container h-75">
+<div class="container h-100">
   <div class="back w-25" @click="navigateBack(postDetails.category.id)">
     Back
   </div>
@@ -56,7 +56,8 @@ watch(postId, (newVal) => {
   border-radius: 15px;
   box-shadow: 0 4px 8px rgba(0,0,0,0.2);
   padding: 20px;
-  overflow: hidden;
+  max-height: 80vh;
+  overflow-y: auto;
   animation: fadeIn 0.6s ease-out;
 }
 
@@ -98,7 +99,7 @@ h2 {
   color: white;
   font-size: 30px;
   font-weight: 600;
-  margin-bottom: 20px;
+  margin-bottom: 40px;
 }
 
 p {

@@ -3,6 +3,7 @@ from rest_framework.routers import DefaultRouter
 from api.views.category import CategoryViewSet
 from api.views.post import PostViewSet
 from api.views.comment import CommentViewSet
+from api.views.register import register_user
 
 router = DefaultRouter()
 
@@ -12,4 +13,5 @@ router.register(r'comments', CommentViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),
+    path('register/', register_user, name='register'),
 ]

@@ -1,7 +1,7 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import router from "@/router";
-import { useForumsStore } from "@/store";
+import { useForumsStore } from "@/store/forumsStore";
 
 const forumsStore = useForumsStore();
 

@@ -8,6 +8,8 @@ const ForumsCategoriesView = () => import("@/views/ForumsCategoriesView.vue");
 const ForumsCategoryPosts = () => import('@/components/ForumsCategoryPosts.vue');
 const ForumsPostDetails = () => import('@/components/ForumsPostDetails.vue');
 const NotFoundView = () => import('@/views/NotFoundView.vue');
+const LoginView = () => import('@/views/LoginView.vue');
+const SignUpView = () => import('@/views/SignUpView.vue');
 
 const routes = [
   {
@@ -47,6 +49,18 @@ const routes = [
         meta: { title: 'Forum Post Details' },
       },
     ]
+  },
+  {
+    path: '/login',
+    name: 'Login',
+    component: LoginView,
+    meta: { title: 'Login' },
+  },
+  {
+    path: '/signup',
+    name: 'SignUp',
+    component: SignUpView,
+    meta: { title: 'Sign Up' },
   },
   {
     path: '/:pathMatch(.*)*',

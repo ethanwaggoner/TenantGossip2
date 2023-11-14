@@ -1,4 +1,7 @@
-import { defineStore } from 'pinia'
+import { defineStore } from 'pinia';
+import axios from 'axios';
+
+const API_BASE_URL = 'http://127.0.0.1:8000'; // Consider moving this to an environment variable
 
 export const useForumsStore = defineStore('forums', {
     state: () => ({
@@ -20,29 +23,26 @@ export const useForumsStore = defineStore('forums', {
         async fetchCategories() {
             try {
                 this.isLoading = true;
-                const response = await fetch("http://127.0.0.1:8000/api/categories/?format=json");
-                if (!response.ok) throw new Error('Network response was not ok');
-                this.categories = await response.json();
+                const response = await axios.get(`${API_BASE_URL}/api/categories/?format=json`);
+                this.categories = response.data;
             } catch (error) {
                 this.error = error;
             } finally {
                 this.isLoading = false;
             }
         },
-         async fetchPosts(categoryId, page = 1) {
+        async fetchPosts(categoryId, page = 1) {
             try {
                 this.isLoading = true;
-                const url = `http://127.0.0.1:8000/api/posts/?category_id=${categoryId}&page=${page}`;
-                const response = await fetch(url);
-                if (!response.ok) throw new Error('Network response was not ok');
-                const data = await response.json();
+                const url = `${API_BASE_URL}/api/posts/?category_id=${categoryId}&page=${page}`;
+                const response = await axios.get(url);
                 this.$patch(state => {
-                    state.posts[categoryId] = data.results;
+                    state.posts[categoryId] = response.data.results;
                     state.pagination = {
                         currentPage: page,
-                        totalPages: Math.ceil(data.count / state.pagination.pageSize),
+                        totalPages: Math.ceil(response.data.count / state.pagination.pageSize),
                         pageSize: state.pagination.pageSize,
-                        totalItems: data.count
+                        totalItems: response.data.count
                     };
                 });
                 this.currentCategoryID = categoryId;
@@ -56,11 +56,9 @@ export const useForumsStore = defineStore('forums', {
             try {
                 this.isLoading = true;
                 if (!this.postDetails[postId]) {
-                    const response = await fetch(`http://127.0.0.1:8000/api/posts/${postId}/category/${this.currentCategoryID}`);
-                    if (!response.ok) throw new Error('Network response was not ok');
-                    const postDetailsData = await response.json();
+                    const response = await axios.get(`${API_BASE_URL}/api/posts/${postId}/category/${this.currentCategoryID}`);
                     this.$patch(state => {
-                        state.postDetails[postId] = postDetailsData;
+                        state.postDetails[postId] = response.data;
                     });
                 }
                 this.currentPostID = postId;
@@ -69,6 +67,9 @@ export const useForumsStore = defineStore('forums', {
             } finally {
                 this.isLoading = false;
             }
+        },
+        clearError() {
+            this.error = null;
         }
     },
 });
