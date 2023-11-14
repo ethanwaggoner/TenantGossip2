@@ -83,6 +83,7 @@ h2 {
 .input-group {
   margin-bottom: 15px;
   text-align: left;
+  animation: slideUp 0.6s ease-out;
 }
 
 label {

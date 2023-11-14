@@ -38,14 +38,14 @@ const logout = () => {
           <h2>Write a Review</h2>
         </router-link>
         <div class="divider"></div>
-        <router-link to="/signup" class="nav-item">
+        <router-link v-if="!isAuthenticated" to="/signup" class="nav-item">
           <h2>Signup</h2>
         </router-link>
-        <div class="divider"></div>
-        <router-link v-if="!isAuthenticated" to="/login" class="nav-item">
-          <h2>Login</h2>
-        </router-link>
-        <div v-else class="nav-item" @click="logout">
+        <div v-if="!isAuthenticated" class="divider"></div>
+          <router-link v-if="!isAuthenticated" to="/login" class="nav-item">
+            <h2>Login</h2>
+          </router-link>
+        <div v-else @click="logout" class="nav-item">
           <h2>Logout</h2>
         </div>
       </div>

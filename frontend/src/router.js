@@ -1,4 +1,5 @@
 import { createWebHistory, createRouter } from 'vue-router'
+import { useUserStore} from "@/store/userStore";
 
 // Lazy load all route components
 const HomepageView = () => import("@/views/HomepageView.vue");
@@ -77,7 +78,18 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   document.title = to.meta.title || 'Tenant Gossip';
-  next();
+  const userStore = useUserStore();
+  const isAuthenticated = userStore.isAuthenticated;
+
+  if (to.matched.some(record => record.path === '/forums' || record.path.startsWith('/forums/'))) {
+    if (!isAuthenticated) {
+      next({ name: 'Login' });
+    } else {
+      next();
+    }
+  } else {
+    next();
+  }
 });
 
 export default router;
