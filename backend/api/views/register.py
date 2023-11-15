@@ -9,7 +9,6 @@ from api.serializers import CustomUserSerializer
 @csrf_exempt
 @api_view(['POST'])
 def register_user(request):
-    print(request.data)
     serializer = CustomUserSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save()

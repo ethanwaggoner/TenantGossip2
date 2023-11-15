@@ -11,6 +11,7 @@ const ForumsPostDetails = () => import('@/components/ForumsPostDetails.vue');
 const NotFoundView = () => import('@/views/NotFoundView.vue');
 const LoginView = () => import('@/views/LoginView.vue');
 const SignUpView = () => import('@/views/SignUpView.vue');
+const ReviewsView = () => import('@/views/ReviewsView.vue')
 
 const routes = [
   {
@@ -62,6 +63,12 @@ const routes = [
     name: 'SignUp',
     component: SignUpView,
     meta: { title: 'Sign Up' },
+  },
+  {
+    path: '/read-reviews',
+    name: 'Reviews',
+    component: ReviewsView,
+    meta: { title: 'Reviews' },
   },
   {
     path: '/:pathMatch(.*)*',

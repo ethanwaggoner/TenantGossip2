@@ -30,12 +30,12 @@ const logout = () => {
           <h2>Read Reviews</h2>
         </router-link>
         <div class="divider"></div>
-        <router-link to="/forums" class="nav-item">
-          <h2>Forums</h2>
-        </router-link>
-        <div class="divider"></div>
         <router-link to="/write-review" class="nav-item">
           <h2>Write a Review</h2>
+        </router-link>
+        <div class="divider"></div>
+        <router-link to="/forums" class="nav-item">
+          <h2>Forums</h2>
         </router-link>
         <div class="divider"></div>
         <router-link v-if="!isAuthenticated" to="/signup" class="nav-item">

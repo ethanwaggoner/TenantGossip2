@@ -5,9 +5,9 @@ const API_BASE_URL = 'http://127.0.0.1:8000';
 
 export const useUserStore = defineStore('user', {
     state: () => ({
-        token: null,
+        token: localStorage.getItem('user-token') || null,
         user: null,
-        isLoggedIn: false,
+        isLoggedIn: !!localStorage.getItem('user-token'),
         isLoading: false,
         error: null,
     }),
@@ -37,6 +37,7 @@ export const useUserStore = defineStore('user', {
                 });
                 this.token = response.data.access;
                 this.isLoggedIn = true;
+                localStorage.setItem('user-token', this.token);
             } catch (error) {
                 this.error = error;
                 this.isLoggedIn = false;
@@ -48,6 +49,7 @@ export const useUserStore = defineStore('user', {
             this.token = null;
             this.user = null;
             this.isLoggedIn = false;
+            localStorage.removeItem('user-token');
         },
         async refreshToken() {
             try {
