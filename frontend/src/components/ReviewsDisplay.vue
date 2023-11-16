@@ -3,13 +3,19 @@ import { defineProps, defineEmits } from 'vue';
 
 const props = defineProps({
   reviews: Array,
-  pagination: Object
+  pagination: Object,
+  states: Array
 });
 
 const emit = defineEmits(['changePage']);
 
 const emitChangePage = (page) => {
   emit('changePage', page);
+}
+
+const findStateNameById = (stateId) => {
+  const matchingState = props.states.find(s => s.stateId ===stateId);
+  return matchingState ? matchingState.state : 'Unknown';
 }
 </script>
 
@@ -18,6 +24,12 @@ const emitChangePage = (page) => {
     <div v-for="review in reviews" :key="review.id" class="review-card w-100">
       <h3>{{ review.title }}</h3>
       <p>{{ review.content }}</p>
+      <div class="review-details">
+        <span>State: {{ findStateNameById(review.state_id) }}</span>
+        <span>Posted on: {{ new Date(review.created_at).toLocaleDateString() }}</span>
+        <span>Likes: {{ review.num_likes }}</span>
+        <span>Author: {{ review.author_random_username }}</span>
+      </div>
     </div>
     <div class="pagination-controls">
       <button @click="emitChangePage(pagination.currentPage - 1)"
@@ -32,6 +44,7 @@ const emitChangePage = (page) => {
     </div>
   </div>
 </template>
+
 
 <style scoped>
 .reviews-list {
@@ -84,5 +97,19 @@ const emitChangePage = (page) => {
 .pagination-controls button:disabled {
   background: #ccc;
   cursor: not-allowed;
+}
+
+.review-details {
+  color: white;
+  font-size: 0.8em;
+  margin-top: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+}
+
+.review-details span {
+  display: inline-block;
+  margin-bottom: 5px;
 }
 </style>

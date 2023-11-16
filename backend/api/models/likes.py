@@ -23,3 +23,13 @@ class CommentLike(models.Model):
     class Meta:
         unique_together = ('user', 'comment')
 
+
+class ReviewLike(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='review_likes')
+    review = models.ForeignKey('Review', on_delete=models.CASCADE, related_name='likes')
+
+    def __str__(self):
+        return f"User {self.user_id} likes Review {self.review_id}"
+
+    class Meta:
+        unique_together = ('user', 'review')

@@ -11,14 +11,13 @@ const selectState = (stateId) => {
   emit('stateSelected', stateId);
 }
 
-
 </script>
-
 
 <template>
   <h2>State Selection</h2>1
   <div class="state-sidebar h-25">
     <ul>
+      <li @click="selectState(null)">All</li>
       <li v-for="state in states" :key="state.stateId" @click="selectState(state.stateId)">
         {{ state.state }}
       </li>

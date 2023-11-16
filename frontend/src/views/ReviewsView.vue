@@ -67,7 +67,11 @@ onMounted(() => {
 });
 
 const fetchReviewsByState = (stateId) => {
-  reviewsStore.fetchReviewsByState(stateId);
+  if (stateId === null) {
+    reviewsStore.fetchAllReviews();
+  } else {
+    reviewsStore.fetchReviewsByState(stateId);
+  }
 };
 
 const changePage = (page) => {
@@ -76,6 +80,7 @@ const changePage = (page) => {
 </script>
 
 <template>
+  <h2></h2>
   <div class="container col-12 w-100">
     <div class="reviews-page col-12">
       <div class="row">
@@ -83,7 +88,7 @@ const changePage = (page) => {
           <ReviewsSidebar :states="sortedStates" @stateSelected="fetchReviewsByState" />
         </div>
         <div class=col-10>
-          <ReviewsDisplay :reviews="reviewsStore.reviews" :pagination="reviewsStore.pagination" @changePage="changePage" />
+          <ReviewsDisplay :states="sortedStates" :reviews="reviewsStore.reviews" :pagination="reviewsStore.pagination" @changePage="changePage" />
         </div>
       </div>
   </div>

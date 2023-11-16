@@ -11,7 +11,7 @@ export const useReviewsStore = defineStore('reviews', {
         pagination: {
             currentPage: 1,
             totalPages: 0,
-            pageSize: 6,
+            pageSize: 4,
             totalReviews: 0,
         }
     }),
