@@ -36,7 +36,7 @@ const routes = [
     path: '/forums',
     name: 'Forums',
     component: ForumsCategoriesView,
-    meta: { title: 'Forums' },
+    meta: { title: 'Forums', requiresAuth: true },
     children: [
       {
         path: 'category/:categoryId',
@@ -83,20 +83,23 @@ const router = createRouter({
   routes,
 });
 
-router.beforeEach((to, from, next) => {
+router.beforeEach(async (to, from, next) => {
   document.title = to.meta.title || 'Tenant Gossip';
   const userStore = useUserStore();
-  const isAuthenticated = userStore.isAuthenticated;
 
-  if (to.matched.some(record => record.path === '/forums' || record.path.startsWith('/forums/'))) {
-    if (!isAuthenticated) {
-      next({ name: 'Login' });
-    } else {
-      next();
-    }
+  // Wait for authentication check to complete
+  if (!userStore.authCheckComplete) {
+    await userStore.checkAuthentication();
+  }
+
+  if (to.matched.some(record => record.meta.requiresAuth) && !userStore.isAuthenticated) {
+    next({ name: 'Login' });
   } else {
     next();
   }
 });
+
+
+
 
 export default router;

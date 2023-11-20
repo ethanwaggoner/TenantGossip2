@@ -7,11 +7,11 @@ export const useUserStore = defineStore('user', {
     state: () => ({
         isLoggedIn: false,
         isLoading: false,
+        authCheckComplete: false,
         error: null,
     }),
     getters: {
         isAuthenticated(state) {
-            // Directly rely on the state value as cookies are HTTPOnly
             return state.isLoggedIn;
         }
     },
@@ -19,8 +19,6 @@ export const useUserStore = defineStore('user', {
         async checkAuthentication() {
             this.isLoading = true;
             try {
-                // The backend will validate the HTTPOnly cookie
-                await this.refreshToken();
                 await axios.get(`${API_BASE_URL}/api/verify-token/`, { withCredentials: true });
                 this.isLoggedIn = true;
             } catch (error) {
@@ -28,6 +26,7 @@ export const useUserStore = defineStore('user', {
                 this.isLoggedIn = false;
             } finally {
                 this.isLoading = false;
+                this.authCheckComplete = true;
             }
         },
 
@@ -62,7 +61,6 @@ export const useUserStore = defineStore('user', {
         async refreshToken() {
             this.isLoading = true;
             try {
-                // The backend will handle the token refresh
                 await axios.post(`${API_BASE_URL}/api/token/refresh/`, {}, { withCredentials: true });
                 this.isLoggedIn = true;
             } catch (error) {
