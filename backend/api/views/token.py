@@ -31,7 +31,7 @@ class CustomTokenRefreshView(TokenRefreshView):
         if response.status_code == status.HTTP_200_OK:
             access_token = response.data['access']
             response.set_cookie(
-                key='access_token', value=access_token, httponly=True, samesite='None', secure=True, max_age=7 * 24 * 60 * 60 * 1000
+                key='access_token', value=access_token, httponly=True, samesite='None', secure=True
             )
             response.data = {'message': 'Token refreshed successfully'}
         return response

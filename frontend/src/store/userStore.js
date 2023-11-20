@@ -22,7 +22,6 @@ export const useUserStore = defineStore('user', {
                 await axios.get(`${API_BASE_URL}/api/verify-token/`, { withCredentials: true });
                 this.isLoggedIn = true;
             } catch (error) {
-                console.error('Authentication check failed:', error);
                 this.isLoggedIn = false;
             } finally {
                 this.isLoading = false;
@@ -33,7 +32,6 @@ export const useUserStore = defineStore('user', {
         async login(email, password) {
             this.isLoading = true;
             try {
-                // Login will set HTTPOnly cookies on successful authentication
                 await axios.post(`${API_BASE_URL}/api/token/`, { email, password }, { withCredentials: true });
                 this.isLoggedIn = true;
             } catch (error) {
@@ -47,10 +45,8 @@ export const useUserStore = defineStore('user', {
         async logout() {
             this.isLoading = true;
             try {
-                // Logout request to backend to clear HTTPOnly cookies
                 await axios.post(`${API_BASE_URL}/api/logout/`, {}, { withCredentials: true });
             } catch (error) {
-                console.error('Logout failed:', error);
             } finally {
                 this.user = null;
                 this.isLoggedIn = false;
@@ -64,15 +60,33 @@ export const useUserStore = defineStore('user', {
                 await axios.post(`${API_BASE_URL}/api/token/refresh/`, {}, { withCredentials: true });
                 this.isLoggedIn = true;
             } catch (error) {
-                console.error('Token refresh error:', error);
                 await this.logout();
             } finally {
                 this.isLoading = false;
             }
         },
 
-        clearError() {
-            this.error = null;
+       setupInterceptors() {
+            axios.interceptors.response.use(response => {
+                return response;
+            }, async (error) => {
+                const originalRequest = error.config;
+                if (originalRequest.url.includes('/api/token/refresh')) {
+                    return Promise.reject(error);
+                }
+                if (error.response && error.response.status === 401 && !originalRequest._retry) {
+                    originalRequest._retry = true;
+                    try {
+                        await this.refreshToken();
+                        return axios(originalRequest);
+                    } catch (refreshError) {
+                        await this.logout();
+                        return Promise.reject(error);
+                    }
+                }
+                return Promise.reject(error);
+            });
         }
     },
 });
+
