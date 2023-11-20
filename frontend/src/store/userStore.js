@@ -5,63 +5,74 @@ const API_BASE_URL = 'http://127.0.0.1:8000';
 
 export const useUserStore = defineStore('user', {
     state: () => ({
-        token: localStorage.getItem('user-token') || null,
-        user: null,
-        isLoggedIn: !!localStorage.getItem('user-token'),
+        isLoggedIn: false,
         isLoading: false,
         error: null,
     }),
     getters: {
         isAuthenticated(state) {
-            return state.token !== null && state.isLoggedIn;
+            // Directly rely on the state value as cookies are HTTPOnly
+            return state.isLoggedIn;
         }
     },
     actions: {
-        async register(userData) {
+        async checkAuthentication() {
+            this.isLoading = true;
             try {
-                this.isLoading = true;
-                await axios.post(`${API_BASE_URL}/api/register/`, userData);
-                // Optionally, log in the user directly after registration
-            } catch (error) {
-                this.error = error;
-            } finally {
-                this.isLoading = false;
-            }
-        },
-        async login(email, password) {
-            try {
-                this.isLoading = true;
-                const response = await axios.post(`${API_BASE_URL}/token/`, {
-                    email,
-                    password,
-                });
-                this.token = response.data.access;
+                // The backend will validate the HTTPOnly cookie
+                await this.refreshToken();
+                await axios.get(`${API_BASE_URL}/api/verify-token/`, { withCredentials: true });
                 this.isLoggedIn = true;
-                localStorage.setItem('user-token', this.token);
             } catch (error) {
-                this.error = error;
+                console.error('Authentication check failed:', error);
                 this.isLoggedIn = false;
             } finally {
                 this.isLoading = false;
             }
         },
-        logout() {
-            this.token = null;
-            this.user = null;
-            this.isLoggedIn = false;
-            localStorage.removeItem('user-token');
-        },
-        async refreshToken() {
+
+        async login(email, password) {
+            this.isLoading = true;
             try {
-                const response = await axios.post(`${API_BASE_URL}/token/refresh/`, {
-                    refresh: this.token,
-                });
-                this.token = response.data.access;
+                // Login will set HTTPOnly cookies on successful authentication
+                await axios.post(`${API_BASE_URL}/api/token/`, { email, password }, { withCredentials: true });
+                this.isLoggedIn = true;
             } catch (error) {
-                console.error('Token refresh error:', error);
-                this.logout();
+                this.error = error.response.data;
+                this.isLoggedIn = false;
+            } finally {
+                this.isLoading = false;
             }
         },
+
+        async logout() {
+            this.isLoading = true;
+            try {
+                // Logout request to backend to clear HTTPOnly cookies
+                await axios.post(`${API_BASE_URL}/api/logout/`, {}, { withCredentials: true });
+            } catch (error) {
+                console.error('Logout failed:', error);
+            } finally {
+                this.user = null;
+                this.isLoggedIn = false;
+                this.isLoading = false;
+            }
+        },
+
+        async refreshToken() {
+            this.isLoading = true;
+            try {
+                // The backend will handle the token refresh
+                await axios.post(`${API_BASE_URL}/api/token/refresh/`, {}, { withCredentials: true });
+                this.isLoggedIn = true;
+            } catch (error) {
+                console.error('Token refresh error:', error);
+                await this.logout();
+            } finally {
+                this.isLoading = false;
+            }
+        },
+
         clearError() {
             this.error = null;
         }
