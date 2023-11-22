@@ -1,11 +1,13 @@
 from rest_framework import serializers
 from api.models.review import Review
 from api.models.likes import ReviewLike
+from app import settings
 
 
 class ReviewSerializer(serializers.ModelSerializer):
     num_likes = serializers.IntegerField(read_only=True)
     author_random_username = serializers.SerializerMethodField()
+    user = serializers.PrimaryKeyRelatedField(read_only=True)
 
     class Meta:
         ordering = ['-created_at']

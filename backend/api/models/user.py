@@ -27,7 +27,7 @@ class CustomUserManager(BaseUserManager):
 
 
 class CustomUser(AbstractUser):
-    username = None  # Remove the username field
+    username = None
     email = models.EmailField(unique=True)
     random_username = models.CharField(max_length=100, unique=True)
 

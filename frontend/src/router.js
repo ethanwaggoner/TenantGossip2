@@ -12,6 +12,7 @@ const NotFoundView = () => import('@/views/NotFoundView.vue');
 const LoginView = () => import('@/views/LoginView.vue');
 const SignUpView = () => import('@/views/SignUpView.vue');
 const ReviewsView = () => import('@/views/ReviewsView.vue')
+const WriteReviewView = () => import('@/views/WriteReviewView.vue')
 
 const routes = [
   {
@@ -69,6 +70,12 @@ const routes = [
     name: 'Reviews',
     component: ReviewsView,
     meta: { title: 'Reviews' },
+  },
+  {
+    path: '/write-review',
+    name: 'WriteReview',
+    component: WriteReviewView,
+    meta: { title: 'Write Review', requiresAuth: true },
   },
   {
     path: '/:pathMatch(.*)*',

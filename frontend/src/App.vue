@@ -3,9 +3,9 @@ import NavBarTop from "@/components/NavBarTop.vue";
 import {onMounted} from "vue";
 import {useUserStore} from "@/store/userStore";
 
-onMounted(() => {
+onMounted(async () => {
   const userStore = useUserStore();
-  userStore.checkAuthentication();
+  await userStore.checkAuthentication();
 });
 </script>
 

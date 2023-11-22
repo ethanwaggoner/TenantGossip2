@@ -1,4 +1,5 @@
-from rest_framework import viewsets
+from rest_framework import viewsets, status
+from rest_framework.response import Response
 
 from api.models.likes import ReviewLike
 from api.models.review import Review
@@ -23,6 +24,13 @@ class ReviewViewSet(viewsets.ModelViewSet):
         if state_id is not None:
             queryset = queryset.filter(state_id=state_id)
         return queryset
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save(user=request.user)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class ReviewLikeViewSet(viewsets.ModelViewSet):

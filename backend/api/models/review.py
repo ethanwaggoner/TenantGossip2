@@ -14,3 +14,6 @@ class Review(models.Model):
 
     def __str__(self):
         return f'Review by {self.user.email} on state {self.state_id}'
+
+    class Meta:
+        ordering = ['-created_at']

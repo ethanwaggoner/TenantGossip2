@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia';
 import axios from 'axios';
+import router from "@/router";
 
 const API_BASE_URL = 'http://127.0.0.1:8000';
 
@@ -50,6 +51,18 @@ export const useReviewsStore = defineStore('reviews', {
                 this.isLoading = false;
             }
         },
-        // Other actions...
+         async postNewReview(reviewData) {
+            try {
+                this.isLoading = true;
+                const response = await axios.post(`${API_BASE_URL}/api/reviews/`, reviewData, {withCredentials: true});
+                if (response.status === 201) {
+                    await router.push('/read-reviews');
+                };
+            } catch (error) {
+                this.error = error;
+            } finally {
+                this.isLoading = false;
+            }
+        },
     }
 });

@@ -7,9 +7,9 @@ const userStore = useUserStore();
 
 const isAuthenticated = computed(() => userStore.isAuthenticated);
 
-const logout = () => {
-  userStore.logout();
-  router.push({ name: 'Home' });
+const logout = async() => {
+  await userStore.logout();
+  await router.push({ name: 'Home' });
 }
 </script>
 
