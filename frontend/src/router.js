@@ -101,6 +101,8 @@ router.beforeEach(async (to, from, next) => {
 
   if (to.matched.some(record => record.meta.requiresAuth) && !userStore.isAuthenticated) {
     next({ name: 'Login' });
+  } else if (from.name === 'Login' && to.name === 'Home') {
+    window.location.href = to.fullPath;
   } else {
     next();
   }
