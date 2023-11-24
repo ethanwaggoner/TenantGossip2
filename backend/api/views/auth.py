@@ -1,7 +1,7 @@
 from django.contrib.auth import authenticate, login, logout
 from django.http import JsonResponse
 from django.middleware.csrf import get_token
-from django.views.decorators.csrf import ensure_csrf_cookie, csrf_exempt
+from django.views.decorators.csrf import ensure_csrf_cookie, csrf_exempt, csrf_protect
 from django.views.decorators.http import require_safe
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated, AllowAny
@@ -11,6 +11,7 @@ from rest_framework import status
 
 @api_view(['POST'])
 @permission_classes([AllowAny])
+@csrf_protect
 def login_user(request):
     email = request.data.get('email')
     password = request.data.get('password')
@@ -26,7 +27,6 @@ def login_user(request):
 @permission_classes([IsAuthenticated])
 def logout_user(request):
     request.session.flush()
-    request.COOKIES['csrftoken'] = ''
     logout(request)
     return Response({"message": "Logged out successfully"}, status=status.HTTP_200_OK)
 

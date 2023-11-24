@@ -10,6 +10,7 @@ const isAuthenticated = computed(() => userStore.isAuthenticated);
 const logout = async() => {
   await userStore.logout();
   await router.push({ name: 'Home' });
+  window.location.reload();
 }
 </script>
 
