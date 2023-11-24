@@ -53,6 +53,7 @@ export const useUserStore = defineStore('user', {
             this.error = null;
             try {
                 await axios.get('/api/logout/');
+                Cookies.remove('csrftoken');
                 this.isLoggedIn = false;
             } catch (error) {
                 this.error = error.response ? error.response.data : 'Logout failed';
