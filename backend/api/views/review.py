@@ -1,4 +1,6 @@
+from django.views.decorators.csrf import ensure_csrf_cookie
 from rest_framework import viewsets, status
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from api.models.likes import ReviewLike
@@ -17,6 +19,7 @@ class ReviewViewSet(viewsets.ModelViewSet):
     queryset = Review.objects.all()
     serializer_class = ReviewSerializer
     pagination_class = ReviewPagination
+    permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         queryset = super().get_queryset()

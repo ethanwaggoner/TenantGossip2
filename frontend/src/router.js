@@ -13,6 +13,7 @@ const LoginView = () => import('@/views/LoginView.vue');
 const SignUpView = () => import('@/views/SignUpView.vue');
 const ReviewsView = () => import('@/views/ReviewsView.vue')
 const WriteReviewView = () => import('@/views/WriteReviewView.vue')
+const LoadingView = () => import('@/views/LoadingView.vue')
 
 const routes = [
   {
@@ -94,7 +95,6 @@ router.beforeEach(async (to, from, next) => {
   document.title = to.meta.title || 'Tenant Gossip';
   const userStore = useUserStore();
 
-  // Wait for authentication check to complete
   if (!userStore.authCheckComplete) {
     await userStore.checkAuthentication();
   }

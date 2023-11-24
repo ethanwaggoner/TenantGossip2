@@ -1,6 +1,7 @@
 <script setup>
 import SemiCircle from "@/components/SemiCircle.vue";
 import HomepageSummary from "@/components/HomepageSummary.vue";
+
 </script>
 
 <template>

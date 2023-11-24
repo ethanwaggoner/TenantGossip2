@@ -1,5 +1,6 @@
 from django.contrib.auth import authenticate, login, logout
 from django.http import JsonResponse
+from django.middleware.csrf import get_token
 from django.views.decorators.csrf import ensure_csrf_cookie, csrf_exempt
 from django.views.decorators.http import require_safe
 from rest_framework.decorators import api_view, permission_classes
@@ -9,7 +10,6 @@ from rest_framework import status
 
 
 @api_view(['POST'])
-@ensure_csrf_cookie
 @permission_classes([AllowAny])
 def login_user(request):
     email = request.data.get('email')
@@ -25,6 +25,8 @@ def login_user(request):
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def logout_user(request):
+    request.session.flush()
+    request.COOKIES['csrftoken'] = ''
     logout(request)
     return Response({"message": "Logged out successfully"}, status=status.HTTP_200_OK)
 
@@ -37,5 +39,6 @@ def check_session(request):
 
 @api_view(['GET'])
 @permission_classes([AllowAny])
+@ensure_csrf_cookie
 def set_csrf_token(request):
-    return JsonResponse({"detail": "CSRF cookie set"})
+    return JsonResponse({"token": get_token(request)})

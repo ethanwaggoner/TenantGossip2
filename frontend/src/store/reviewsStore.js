@@ -1,8 +1,6 @@
 import { defineStore } from 'pinia';
-import axios from 'axios';
+import axios from '@/axiosConfig';
 import router from "@/router";
-
-const API_BASE_URL = 'http://127.0.0.1:8000';
 
 export const useReviewsStore = defineStore('reviews', {
     state: () => ({
@@ -20,7 +18,7 @@ export const useReviewsStore = defineStore('reviews', {
         async fetchAllReviews(page = 1) {
             try {
                 this.isLoading = true;
-                const response = await axios.get(`${API_BASE_URL}/api/reviews/?page=${page}`);
+                const response = await axios.get(`/api/reviews/?page=${page}`);
                 this.reviews = response.data.results;
                 this.pagination = {
                     currentPage: page,
@@ -37,7 +35,7 @@ export const useReviewsStore = defineStore('reviews', {
         async fetchReviewsByState(stateId, page = 1) {
             try {
                 this.isLoading = true;
-                const response = await axios.get(`${API_BASE_URL}/api/reviews/?state_id=${stateId}&page=${page}`);
+                const response = await axios.get(`/api/reviews/?state_id=${stateId}&page=${page}`);
                 this.reviews = response.data.results;
                 this.pagination = {
                     currentPage: page,
@@ -54,7 +52,7 @@ export const useReviewsStore = defineStore('reviews', {
          async postNewReview(reviewData) {
             try {
                 this.isLoading = true;
-                const response = await axios.post(`${API_BASE_URL}/api/reviews/`, reviewData, {withCredentials: true});
+                const response = await axios.post(`/api/reviews/`, reviewData);
                 if (response.status === 201) {
                     await router.push('/read-reviews');
                 };

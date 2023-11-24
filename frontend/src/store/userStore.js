@@ -1,11 +1,6 @@
 import { defineStore } from 'pinia';
-import axios from 'axios';
-
-const API_BASE_URL = 'http://127.0.0.1:8000';
-axios.defaults.xsrfHeaderName = "X-CSRFToken"
-axios.defaults.xsrfCookieName = 'csrftoken'
-axios.defaults.withCredentials = true
-
+import axios from '@/axiosConfig';
+import Cookies from "js-cookie";
 
 export const useUserStore = defineStore('user', {
     state: () => ({
@@ -24,8 +19,7 @@ export const useUserStore = defineStore('user', {
             this.isLoading = true;
             this.error = null;
             try {
-                this.isLoggedIn = true;
-                await axios.get(`${API_BASE_URL}/api/check-session/`, { withCredentials: true });
+                await axios.get('/api/check-session/');
                 this.isLoggedIn = true;
             } catch (error) {
                 this.error = error.response ? error.response.data : 'Session check failed';
@@ -44,8 +38,7 @@ export const useUserStore = defineStore('user', {
             this.isLoading = true;
             this.error = null;
             try {
-                await axios.get(`${API_BASE_URL}/api/csrf/`);
-                await axios.post(`${API_BASE_URL}/api/login/`, { email, password }, { withCredentials: true });
+                await axios.post('/api/login/', { email, password });
                 this.isLoggedIn = true;
             } catch (error) {
                 this.error = error.response ? error.response.data : 'Login failed';
@@ -59,28 +52,13 @@ export const useUserStore = defineStore('user', {
             this.isLoading = true;
             this.error = null;
             try {
-                await axios.get(`${API_BASE_URL}/api/logout/`, {
-                    withCredentials: true,
-                },
-                    );
+                await axios.get('/api/logout/');
                 this.isLoggedIn = false;
             } catch (error) {
                 this.error = error.response ? error.response.data : 'Logout failed';
             } finally {
                 this.isLoading = false;
             }
-        },
-
-        setupInterceptors() {
-            axios.interceptors.response.use(response => {
-                return response;
-            }, async (error) => {
-                if (error.response && error.response.status === 401) {
-                    this.error = 'Session expired. Please log in again.';
-                    await this.logout();
-                }
-                return Promise.reject(error);
-            });
         }
     },
 });

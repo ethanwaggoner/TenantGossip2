@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'api',
     'corsheaders',
+    'sslserver',
 ]
 
 MIDDLEWARE = [
@@ -130,17 +131,18 @@ CORS_ALLOW_CREDENTIALS = True
 
 
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:5173",
+    "https://localhost:5173",
 ]
 
 CSRF_TRUSTED_ORIGINS = [
-    "http://localhost:5173",
+    "https://localhost:5173",
 ]
 
-CSRF_USE_SESSIONS = True
+CSRF_USE_SESSIONS = False
 CSRF_COOKIE_SAMESITE = 'None'
 CSRF_COOKIE_SECURE = True
-CSRF_COOKIE_HTTPONLY = True
+CSRF_COOKIE_HTTPONLY = False
+CSRF_COOKIE_AGE = 60 * 60 * 24 * 30  # 30 days
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
@@ -152,10 +154,10 @@ AUTH_USER_MODEL = 'api.CustomUser'
 
 LOGIN_URL = '/api/login/'
 
-SESSION_COOKIE_HTTPONLY = True
+SESSION_COOKIE_HTTPONLY = False
 SESSION_COOKIE_SECURE = True
 SESSION_COOKIE_SAMESITE = 'None'
-SESSION_COOKIE_AGE = 60
+SESSION_COOKIE_AGE = 60 * 60 * 24 * 30  # 30 days
 SESSION_ENGINE = 'django.contrib.sessions.backends.db'
 
 # Expire session when the user closes their browser
