@@ -62,5 +62,22 @@ export const useReviewsStore = defineStore('reviews', {
                 this.isLoading = false;
             }
         },
-    }
+        async toggleLike(reviewId) {
+            try {
+                this.isLoading = true;
+                const response = await axios.post(`/api/reviews/${reviewId}/toggle_like/`);
+                if (response.status === 200) {
+                    const updatedReview = response.data;
+                    const index = this.reviews.findIndex(review => review.id === reviewId);
+                    if (index !== -1) {
+                        this.reviews[index] = updatedReview;
+                    }
+                }
+            } catch (error) {
+                this.error = error;
+            } finally {
+                this.isLoading = false;
+            }
+        },
+    },
 });

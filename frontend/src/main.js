@@ -5,6 +5,7 @@ import { createPinia } from 'pinia';
 import axios from './axiosConfig';
 
 import 'bootstrap/dist/css/bootstrap.css';
+import '@fortawesome/fontawesome-free/css/all.min.css';
 import './assets/main.css';
 import Cookies from "js-cookie";
 

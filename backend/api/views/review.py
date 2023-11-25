@@ -1,5 +1,6 @@
-from django.views.decorators.csrf import ensure_csrf_cookie
+from django.views.decorators.csrf import ensure_csrf_cookie, csrf_protect
 from rest_framework import viewsets, status
+from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
@@ -34,6 +35,18 @@ class ReviewViewSet(viewsets.ModelViewSet):
             serializer.save(user=request.user)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    @action(detail=True, methods=['post'])
+    def toggle_like(self, request, pk=None):
+        review = self.get_object()
+        likes = ReviewLike.objects.filter(user=request.user, review=review)
+
+        if likes.exists():
+            likes.delete()
+        else:
+            ReviewLike.objects.create(user=request.user, review=review)
+
+        return Response(ReviewSerializer(review).data)
 
 
 class ReviewLikeViewSet(viewsets.ModelViewSet):

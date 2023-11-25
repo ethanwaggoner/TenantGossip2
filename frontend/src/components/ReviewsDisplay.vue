@@ -1,5 +1,6 @@
 <script setup>
 import { defineProps, defineEmits } from 'vue';
+import {useReviewsStore} from "@/store/reviewsStore";
 
 const props = defineProps({
   reviews: Array,
@@ -17,6 +18,11 @@ const findStateNameById = (stateId) => {
   const matchingState = props.states.find(s => s.stateId ===stateId);
   return matchingState ? matchingState.state : 'Unknown';
 }
+
+const toggleLike = async (review) => {
+  await useReviewsStore().toggleLike(review.id);
+};
+
 </script>
 
 <template>
@@ -27,7 +33,10 @@ const findStateNameById = (stateId) => {
       <div class="review-details">
         <span>State: {{ findStateNameById(review.state_id) }}</span>
         <span>Posted on: {{ new Date(review.created_at).toLocaleDateString() }}</span>
-        <span>Likes: {{ review.num_likes }}</span>
+        <span class="likes">
+          <i class="fa fa-heart" @click="toggleLike(review)"></i>
+          <span>{{ review.num_likes }}</span>
+        </span>
         <span>Author: {{ review.author_random_username }}</span>
       </div>
     </div>
@@ -113,5 +122,14 @@ const findStateNameById = (stateId) => {
   margin-bottom: 5px;
 }
 
+ .fa-heart {
+    color: #e25555;
+    cursor: pointer;
+    margin-right: 5px;
+    transition: color 0.3s ease;
+  }
 
+  .fa-heart:hover {
+    color: #cc4444;
+  }
 </style>
