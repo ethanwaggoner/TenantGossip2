@@ -1,5 +1,5 @@
 <script setup>
-import {computed, onMounted, watch} from 'vue';
+import {computed, onMounted, ref, watch} from 'vue';
 import { useRoute } from 'vue-router';
 import { useForumsStore } from "@/store/forumsStore";
 import router from "@/router";
@@ -7,6 +7,27 @@ import router from "@/router";
 const route = useRoute();
 const postId = computed(() => route.params.postId);
 const forumsStore = useForumsStore();
+const newCommentBody = ref('');
+
+function createComment() {
+  console.log("Post ID:", postId.value);
+  if (newCommentBody.value) {
+    const commentData = {
+      body: newCommentBody.value,
+      post: postId.value,
+    };
+    forumsStore.createComment(commentData)
+      .then(() => {
+        newCommentBody.value = '';
+        fetchPostDetails(postId.value);
+      })
+      .catch(error => {
+        console.error("Error creating comment:", error);
+      });
+  } else {
+    alert('Please enter a comment.');
+  }
+}
 
 const postDetails = computed(() => forumsStore.postDetails[postId.value] || {})
 function navigateBack(catId) {
@@ -33,15 +54,22 @@ watch(postId, (newVal) => {
 <h2>Post Details</h2>
 <div class="container h-100">
   <div class="back w-25" @click="navigateBack(postDetails.category.id)">
-    Back
+  Back
   </div>
-  <div class="center">
-    <h1>{{ postDetails.title }}</h1>
-    <p>{{ postDetails.body }}</p>
-    <div class="comments-section w-100">
+    <div class="center">
+      <h1>{{ postDetails.title }}</h1>
+      <p>{{ postDetails.body }}</p>
+      <div class="comments-section w-100">
       <h3>Comments ({{ postDetails.comments_count }})</h3>
+
+
+      <div class="comment-form">
+      <textarea v-model="newCommentBody" placeholder="Write a comment..."></textarea>
+      <button @click="createComment">Submit Comment</button>
+      </div>
+
       <div class="comment" v-for="comment in postDetails.comments" :key="comment.id">
-        <p>{{ comment.body }}</p>
+      <p>{{ comment.body }}</p>
       </div>
     </div>
   </div>
@@ -129,6 +157,27 @@ h3 {
   font-size: 1.2rem;
   margin-bottom: 10px;
 }
+
+.comment-form {
+  margin-bottom: 20px;
+}
+
+.comment-form textarea {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+}
+
+.comment-form button {
+  background-color: #4A00E0;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}1
 
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(20px); }

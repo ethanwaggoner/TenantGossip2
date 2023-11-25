@@ -12,6 +12,26 @@ const currentPage = ref(1);
 const posts = computed(() => forumsStore.posts[catId.value] || []);
 const totalPages = computed(() => forumsStore.pagination.totalPages);
 
+const showNewPostModal = ref(false);
+const newPostTitle = ref('');
+const newPostBody = ref('');
+
+const createNewPost = async () => {
+  if (newPostTitle.value && newPostBody.value) {
+    await forumsStore.createPost({
+      title: newPostTitle.value,
+      body: newPostBody.value,
+      category: catId.value,
+    });
+    showNewPostModal.value = false;
+    newPostTitle.value = '';
+    newPostBody.value = '';
+    fetchPosts();
+  } else {
+    alert('Please fill in all fields.');
+  }
+};
+
 function navigateToPostDetails(postId) {
   router.push({ name: "PostDetails", params: { postId, categoryId: catId.value } });
 }
@@ -49,6 +69,18 @@ watch(catId, (newVal, oldVal) => {
 <template>
 <h2>Posts</h2>
 <div class="container h-100">
+  <button class="new-post-btn" @click="showNewPostModal = true">
+    <i class="fa fa-plus"></i>
+  </button>
+  <div v-if="showNewPostModal" class="modal">
+      <div class="modal-content">
+        <span class="close" @click="showNewPostModal = false">&times;</span>
+        <h3>Create New Post</h3>
+        <input v-model="newPostTitle" type="text" placeholder="Post Title" />
+        <textarea v-model="newPostBody" placeholder="Post Content"></textarea>
+        <button @click="createNewPost">Post</button>
+      </div>
+  </div>
   <div class="row justify-content-center">
     <div v-for="post in posts" :key="post.id" class="category-card mb-4" @click.stop="navigateToPostDetails(post.id)">
       <div>
@@ -75,6 +107,64 @@ watch(catId, (newVal, oldVal) => {
   max-height: 75vh;
   overflow-y: auto;
   padding: 20px;
+}
+
+.new-post-btn {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: #4A00E0;
+  border: none;
+  border-radius: 50%;
+  color: white;
+  padding: 15px;
+  font-size: 40px;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  width: 80%;
+  max-width: 500px;
+}
+
+.close {
+  float: right;
+  font-size: 28px;
+  cursor: pointer;
+}
+
+.modal input, .modal textarea {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+}
+
+.modal button {
+  background-color: #4A00E0;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  float: right;
 }
 
 .category-card {

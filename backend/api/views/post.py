@@ -1,5 +1,6 @@
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.pagination import PageNumberPagination
 
@@ -18,12 +19,20 @@ class PostViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
     pagination_class = StandardResultsSetPagination
+    permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         category_id = self.request.query_params.get('category_id', None)
         if category_id is not None:
             self.queryset = self.queryset.filter(category__id=category_id)
         return self.queryset
+
+    def create(self, request, *args, **kwargs):
+        serializer = PostSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save(author=request.user)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     @action(detail=True, methods=['get'], url_path='category/(?P<category_id>\d+)')
     def category_post(self, request, pk=None, category_id=None):

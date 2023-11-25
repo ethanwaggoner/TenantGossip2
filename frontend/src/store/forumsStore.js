@@ -18,6 +18,47 @@ export const useForumsStore = defineStore('forums', {
         }
     }),
     actions: {
+         async createPost(postData) {
+            try {
+                this.isLoading = true;
+
+                const response = await axios.post('/api/posts/', postData);
+                if (response.status === 201) {
+                    const newPost = response.data;
+                    if (this.posts[this.currentCategoryID]) {
+                        this.posts[this.currentCategoryID].unshift(newPost);
+                    } else {
+                        this.$set(this.posts, this.currentCategoryID, [newPost]);
+                    }
+                }
+            } catch (error) {
+                this.error = error;
+            } finally {
+                this.isLoading = false;
+            }
+        },
+
+        async createComment(commentData) {
+             console.log("Sending comment data:", commentData);
+            try {
+                this.isLoading = true;
+                const response = await axios.post('/api/comments/', {
+                    body: commentData.body,
+                    post: this.currentPostID,
+                });
+                if (response.status === 201) {
+                    const newComment = response.data;
+                    if (this.postDetails[this.currentPostID]) {
+                        this.postDetails[this.currentPostID].comments.push(newComment);
+                    }
+                }
+            } catch (error) {
+                this.error = error;
+            } finally {
+                this.isLoading = false;
+            }
+        },
+
         async fetchCategories() {
             try {
                 this.isLoading = true;
