@@ -39,10 +39,10 @@ class ReviewViewSet(viewsets.ModelViewSet):
     @action(detail=True, methods=['post'])
     def toggle_like(self, request, pk=None):
         review = self.get_object()
-        likes = ReviewLike.objects.filter(user=request.user, review=review)
+        like = ReviewLike.objects.filter(user=request.user, review=review)
 
-        if likes.exists():
-            likes.delete()
+        if like.exists():
+            like.delete()
         else:
             ReviewLike.objects.create(user=request.user, review=review)
 
