@@ -10,7 +10,10 @@ const forumsStore = useForumsStore();
 const newCommentBody = ref('');
 
 function createComment() {
-  console.log("Post ID:", postId.value);
+  if (newCommentBody.value.length > 200) {
+    alert('Comment must be 200 characters or less.');
+    return;
+  }
   if (newCommentBody.value) {
     const commentData = {
       body: newCommentBody.value,
@@ -69,8 +72,13 @@ watch(postId, (newVal) => {
       </div>
 
       <div class="comment" v-for="comment in postDetails.comments" :key="comment.id">
-      <p>{{ comment.body }}</p>
+        <div class="comment-header">
+          <span class="author">{{ comment.author }}</span>
+          <span class="date">{{new Date(comment.created_at).toLocaleDateString() }}</span>
+        </div>
+        <p>{{ comment.body }}</p>
       </div>
+
     </div>
   </div>
 </div>
@@ -150,6 +158,8 @@ p {
   margin-bottom: 10px;
   border-radius: 8px;
   color: #E6E6E6;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 
 h3 {
@@ -177,7 +187,23 @@ h3 {
   border: none;
   border-radius: 5px;
   cursor: pointer;
-}1
+}
+
+.comment-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 5px;
+  font-size: 0.9rem;
+  color: #AAA;
+}
+
+.author {
+  font-weight: bold;
+}
+
+.date {
+  font-style: italic;
+}
 
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(20px); }
