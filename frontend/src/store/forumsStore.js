@@ -67,6 +67,25 @@ export const useForumsStore = defineStore('forums', {
         },
         clearError() {
             this.error = null;
+        },
+        async togglePostLike(postId) {
+            try {
+                this.isLoading = true;
+                const response = await axios.post(`/api/posts/${postId}/toggle_like/`);
+                if (response.status === 200) {
+                    this.postDetails[postId] = response.data;
+                    const categoryPosts = this.posts[this.currentCategoryID];
+                    const postIndex = categoryPosts.findIndex(post => post.id === postId);
+                    if (postIndex !== -1) {
+                        categoryPosts[postIndex] = response.data;
+                    }
+                }
+            } catch (error) {
+                this.error = error;
+            } finally {
+                this.isLoading = false;
+            }
         }
-    },
+    }
 });
+

@@ -33,6 +33,10 @@ function goToPreviousPage() {
   }
 }
 
+const togglePostLike = async (post) => {
+  await forumsStore.togglePostLike(post.id);
+}
+
 onMounted(() => fetchPosts(currentPage.value));
 
 watch(catId, (newVal, oldVal) => {
@@ -46,13 +50,15 @@ watch(catId, (newVal, oldVal) => {
 <h2>Posts</h2>
 <div class="container h-100">
   <div class="row justify-content-center">
-    <div v-for="post in posts" :key="post.id" class="category-card mb-4" @click="navigateToPostDetails(post.id)">
+    <div v-for="post in posts" :key="post.id" class="category-card mb-4" @click.stop="navigateToPostDetails(post.id)">
       <div>
         <h5>{{ post.title }}</h5>
         <p>{{ post.body }}</p>
       </div>
       <div class="likes">
-        <small> {{ post.like_count }} Likes {{ post.comments_count }} Comments</small>
+        <small>{{ post.comments_count }} Comments</small>
+        <i class="fa fa-heart" @click.stop="togglePostLike(post)"></i>
+        <span> {{ post.like_count }} </span>
       </div>
     </div>
   </div>
@@ -164,5 +170,32 @@ p {
 .pagination span {
   margin: 0 10px;
   color: white;
+}
+
+.fa-heart {
+  color: #e25555;
+  cursor: pointer;
+  margin-right: 5px;
+  margin-left: 5px;
+  transform: scale(1);
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.fa-heart:hover, .fa-heart.liked {
+  color: #cc4444;
+  transform: scale(1.25);
+}
+
+.fa-heart.liked {
+  animation: heartBounce 0.5s ease;
+}
+
+@keyframes heartBounce {
+  0%, 100% {
+    transform: scale(1.25);
+  }
+  50% {
+    transform: scale(1.4);
+  }
 }
 </style>

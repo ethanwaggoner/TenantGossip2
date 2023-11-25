@@ -2,6 +2,8 @@ from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.pagination import PageNumberPagination
+
+from api.models.likes import PostLike
 from api.models.post import Post
 from api.serializers.post import PostSerializer
 
@@ -31,4 +33,15 @@ class PostViewSet(viewsets.ModelViewSet):
             return Response(serializer.data)
         except Post.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
+
+    @action(detail=True, methods=['post'])
+    def toggle_like(self, request, pk=None):
+        post = self.get_object()
+        like = PostLike.objects.filter(user=request.user, post=post)
+        if like.exists():
+            like.delete()
+        else:
+            PostLike.objects.create(user=request.user, post=post)
+
+        return Response(PostSerializer(post).data)
 

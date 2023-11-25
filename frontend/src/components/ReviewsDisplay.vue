@@ -33,11 +33,11 @@ const toggleLike = async (review) => {
       <div class="review-details">
         <span>State: {{ findStateNameById(review.state_id) }}</span>
         <span>Posted on: {{ new Date(review.created_at).toLocaleDateString() }}</span>
+        <span>Author: {{ review.author_random_username }}</span>
         <span class="likes">
-          <i class="fa fa-heart" @click="toggleLike(review)"></i>
+          <i :class="{'fa': true, 'fa-heart': true, 'liked': review.isLiked}" @click="toggleLike(review)"></i>
           <span>{{ review.num_likes }}</span>
         </span>
-        <span>Author: {{ review.author_random_username }}</span>
       </div>
     </div>
     <div class="pagination-controls">
@@ -45,7 +45,6 @@ const toggleLike = async (review) => {
               :disabled="pagination.currentPage === 1">
         Previous
       </button>
-      <span>Page {{ pagination.currentPage }} of {{ pagination.totalPages }}</span>
       <button @click="emitChangePage(pagination.currentPage + 1)"
               :disabled="pagination.currentPage === pagination.totalPages">
         Next
@@ -122,14 +121,29 @@ const toggleLike = async (review) => {
   margin-bottom: 5px;
 }
 
- .fa-heart {
-    color: #e25555;
-    cursor: pointer;
-    margin-right: 5px;
-    transition: color 0.3s ease;
-  }
+.fa-heart {
+  color: #e25555;
+  cursor: pointer;
+  margin-right: 5px;
+  transform: scale(1);
+  transition: color 0.3s ease, transform 0.3s ease;
+}
 
-  .fa-heart:hover {
-    color: #cc4444;
+.fa-heart:hover, .fa-heart.liked {
+  color: #cc4444;
+  transform: scale(1.25);
+}
+
+.fa-heart.liked {
+  animation: heartBounce 0.5s ease;
+}
+
+@keyframes heartBounce {
+  0%, 100% {
+    transform: scale(1.25);
   }
+  50% {
+    transform: scale(1.4);
+  }
+}
 </style>
