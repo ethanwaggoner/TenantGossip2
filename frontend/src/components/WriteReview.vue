@@ -76,7 +76,6 @@ const submitReview = async () => {
     content: content.value
   });
 
-  // Reset form fields
   title.value = '';
   content.value = '';
   stateId.value = null;
@@ -88,11 +87,11 @@ const submitReview = async () => {
     <div class="review-card">
       <h2>Write a Review</h2>
       <p class="description">
-        Welcome to TenantGossip – where your voice makes a difference! Just like RateMyProfessor, but for the rental world.
-        Dive into our vibrant community and share your real-life experiences with landlords and property managers.
-        Whether it's praise for an amazing landlord or a word of caution about a less-than-ideal property management experience,
-        your insights are invaluable. Help fellow tenants make informed decisions and navigate their rental journey with confidence.
-        Let's build a transparent and empowered tenant community together – one review at a time!
+        Welcome aboard TenantGossip – the ultimate hub for sharing and discovering real rental experiences.
+        Dive into the heart of our community and let your voice be a guiding light.
+        Share your personal tales, whether it's singing praises for a wonderful landlord or shedding light on less favorable property management experiences.
+        Your insights are a treasure trove for fellow renters, helping them steer their rental journey wisely.
+        Join us in our quest to build a transparent, informed, and empowered tenant community, one honest review at a time!
       </p>
       <form @submit.prevent="submitReview">
         <div class="input-group">
