@@ -27,7 +27,7 @@ class PostViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         try:
             category_id = self.request.query_params.get('category_id', None)
-            if category_id is not None:
+            if int(category_id):
                 self.queryset = self.queryset.filter(category__id=category_id)
             return self.queryset
         except Exception as e:

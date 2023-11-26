@@ -189,7 +189,7 @@ select:hover, select:focus {
 }
 
 select option {
-  color: white;
+  color: black;
   background: linear-gradient(135deg, #8E2DE2 0%, #4A00E0 100%);
 }
 
