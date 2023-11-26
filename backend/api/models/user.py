@@ -1,12 +1,19 @@
 import random
-
+import logging
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.db import models
 
 
+logger = logging.getLogger(__name__)
+
+
 def load_words_from_file(file_path):
-    with open(file_path) as file:
-        return [line.strip() for line in file]
+    try:
+        with open(file_path) as file:
+            return [line.strip() for line in file]
+    except Exception as e:
+        logger.error(f"Error reading file at {file_path}: {e}", exc_info=True)
+        return []
 
 
 ADJECTIVES = load_words_from_file(r'C:\Users\14434\Desktop\Programming '
@@ -24,16 +31,25 @@ class CustomUserManager(BaseUserManager):
         unique_username = False
         random_username = None
         while not unique_username:
-            adjective = random.choice(ADJECTIVES)
-            noun = random.choice(NOUNS)
-            number = random.randint(1000, 9999)
-            random_username = f"{adjective}-{noun}{number}"
-            if not self.model.objects.filter(random_username=random_username).exists():
-                unique_username = True
-        print(random_username)
-        user.random_username = random_username
-        user.set_password(password)
-        user.save(using=self._db)
+            try:
+                adjective = random.choice(ADJECTIVES)
+                noun = random.choice(NOUNS)
+                number = random.randint(1000, 9999)
+                random_username = f"{adjective}-{noun}{number}"
+
+                if not self.model.objects.filter(random_username=random_username).exists():
+                    unique_username = True
+            except Exception as e:
+                logger.error(f"Error generating random username: {e}", exc_info=True)
+                break
+
+        if random_username:
+            user.random_username = random_username
+            user.set_password(password)
+            user.save(using=self._db)
+            logger.info(f"User created with random username: {random_username}")
+        else:
+            logger.error("Failed to create a user with a random username")
         return user
 
     def create_superuser(self, email, password=None, **extra_fields):

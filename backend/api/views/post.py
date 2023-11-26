@@ -1,3 +1,4 @@
+import logging
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
@@ -7,6 +8,8 @@ from rest_framework.pagination import PageNumberPagination
 from api.models.likes import PostLike
 from api.models.post import Post
 from api.serializers.post import PostSerializer
+
+logger = logging.getLogger(__name__)
 
 
 class StandardResultsSetPagination(PageNumberPagination):
@@ -22,16 +25,24 @@ class PostViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
-        category_id = self.request.query_params.get('category_id', None)
-        if category_id is not None:
-            self.queryset = self.queryset.filter(category__id=category_id)
-        return self.queryset
+        try:
+            category_id = self.request.query_params.get('category_id', None)
+            if category_id is not None:
+                self.queryset = self.queryset.filter(category__id=category_id)
+            return self.queryset
+        except Exception as e:
+            logger.error(f"Error in get_queryset of PostViewSet: {e}", exc_info=True)
+            return []
 
     def create(self, request, *args, **kwargs):
         serializer = PostSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save(author=request.user)
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+            try:
+                serializer.save(author=request.user)
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+            except Exception as e:
+                logger.error(f"Error in creating a post: {e}", exc_info=True)
+                return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     @action(detail=True, methods=['get'], url_path='category/(?P<category_id>\d+)')
@@ -42,15 +53,22 @@ class PostViewSet(viewsets.ModelViewSet):
             return Response(serializer.data)
         except Post.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            logger.error(f"Error in category_post action: {e}", exc_info=True)
+            return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     @action(detail=True, methods=['post'])
     def toggle_like(self, request, pk=None):
-        post = self.get_object()
-        like = PostLike.objects.filter(user=request.user, post=post)
-        if like.exists():
-            like.delete()
-        else:
-            PostLike.objects.create(user=request.user, post=post)
+        try:
+            post = self.get_object()
+            like = PostLike.objects.filter(user=request.user, post=post)
+            if like.exists():
+                like.delete()
+            else:
+                PostLike.objects.create(user=request.user, post=post)
 
-        return Response(PostSerializer(post).data)
+            return Response(PostSerializer(post).data)
+        except Exception as e:
+            logger.error(f"Error in toggle_like action: {e}", exc_info=True)
+            return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
