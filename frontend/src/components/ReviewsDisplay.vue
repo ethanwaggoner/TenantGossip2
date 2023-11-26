@@ -1,6 +1,6 @@
 <script setup>
-import { defineProps, defineEmits } from 'vue';
 import {useReviewsStore} from "@/store/reviewsStore";
+import {useUserStore} from "@/store/userStore";
 
 const props = defineProps({
   reviews: Array,
@@ -9,6 +9,8 @@ const props = defineProps({
 });
 
 const emit = defineEmits(['changePage']);
+const reviewsStore = useReviewsStore();
+const userStore = useUserStore();
 
 const emitChangePage = (page) => {
   emit('changePage', page);
@@ -20,7 +22,10 @@ const findStateNameById = (stateId) => {
 }
 
 const toggleLike = async (review) => {
-  await useReviewsStore().toggleLike(review.id);
+  if (userStore.isAuthenticated) {
+    await reviewsStore.toggleLike(review.id);
+  }
+
 };
 
 </script>

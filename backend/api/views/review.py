@@ -1,6 +1,6 @@
 from django.views.decorators.csrf import ensure_csrf_cookie, csrf_protect
 from rest_framework import viewsets, status
-from rest_framework.decorators import action
+from rest_framework.decorators import action, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
@@ -36,6 +36,7 @@ class ReviewViewSet(viewsets.ModelViewSet):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     @action(detail=True, methods=['post'])
+    @permission_classes([IsAuthenticated])
     def toggle_like(self, request, pk=None):
         review = self.get_object()
         like = ReviewLike.objects.filter(user=request.user, review=review)
