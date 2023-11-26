@@ -13,7 +13,11 @@ const reviewsStore = useReviewsStore();
 const userStore = useUserStore();
 
 const emitChangePage = (page) => {
-  emit('changePage', page);
+  if (reviewsStore.selectedStateId) {
+    reviewsStore.fetchReviewsByState(reviewsStore.selectedStateId, page);
+  } else {
+    reviewsStore.fetchAllReviews(page);
+  }
 }
 
 const findStateNameById = (stateId) => {

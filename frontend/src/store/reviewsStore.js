@@ -6,6 +6,7 @@ export const useReviewsStore = defineStore('reviews', {
     state: () => ({
         reviews: [],
         isLoading: false,
+        selectedStateId: null,
         error: null,
         pagination: {
             currentPage: 1,
@@ -15,40 +16,39 @@ export const useReviewsStore = defineStore('reviews', {
         }
     }),
     actions: {
+        async fetchReviews({ page = 1, stateId = null }) {
+            try {
+                this.isLoading = true;
+                let url = `/api/reviews/?page=${page}`;
+                if (stateId) {
+                    url += `&state_id=${stateId}`;
+                }
+
+                const response = await axios.get(url);
+                this.reviews = response.data.results;
+                this.pagination = {
+                    currentPage: page,
+                    totalPages: response.data.total_pages,
+                    pageSize: response.data.page_size,
+                    totalReviews: response.data.count,
+                };
+            } catch (error) {
+                this.error = error;
+            } finally {
+                this.isLoading = false;
+            }
+        },
+
         async fetchAllReviews(page = 1) {
-            try {
-                this.isLoading = true;
-                const response = await axios.get(`/api/reviews/?page=${page}`);
-                this.reviews = response.data.results;
-                this.pagination = {
-                    currentPage: page,
-                    totalPages: response.data.total_pages,
-                    pageSize: response.data.page_size,
-                    totalReviews: response.data.count,
-                };
-            } catch (error) {
-                this.error = error;
-            } finally {
-                this.isLoading = false;
-            }
+            this.selectedStateId = null;
+            await this.fetchReviews({ page });
         },
+
         async fetchReviewsByState(stateId, page = 1) {
-            try {
-                this.isLoading = true;
-                const response = await axios.get(`/api/reviews/?state_id=${stateId}&page=${page}`);
-                this.reviews = response.data.results;
-                this.pagination = {
-                    currentPage: page,
-                    totalPages: response.data.total_pages,
-                    pageSize: response.data.page_size,
-                    totalReviews: response.data.count,
-                };
-            } catch (error) {
-                this.error = error;
-            } finally {
-                this.isLoading = false;
-            }
+            this.selectedStateId = stateId;
+            await this.fetchReviews({ stateId, page });
         },
+
          async postNewReview(reviewData) {
             try {
                 this.isLoading = true;
