@@ -283,8 +283,6 @@ const filteredCards = computed(() => {
   </div>
 </template>
 
-
-
 <style scoped>
 .container {
   display: grid;
@@ -349,10 +347,10 @@ const filteredCards = computed(() => {
 
 .links li {
   margin-bottom: 10px;
+  color: white;
 }
 
 a {
-  color: #FFC107;
   transition: color 0.3s ease;
 }
 
@@ -377,12 +375,8 @@ img {
 }
 
 a {
-  color: #FFC107;
+  color: cornflowerblue;
   text-decoration: none;
-}
-
-a:hover {
-  text-decoration: underline;
 }
 
 .search-container {
