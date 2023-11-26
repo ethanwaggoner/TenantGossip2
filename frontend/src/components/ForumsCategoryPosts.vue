@@ -72,6 +72,7 @@ watch(catId, (newVal, oldVal) => {
   <button class="new-post-btn" @click="showNewPostModal = true">
     <i class="fa fa-plus"></i>
   </button>
+  <transition name="fade">
   <div v-if="showNewPostModal" class="modal">
       <div class="modal-content">
         <span class="close" @click="showNewPostModal = false">&times;</span>
@@ -81,6 +82,7 @@ watch(catId, (newVal, oldVal) => {
         <button @click="createNewPost">Post</button>
       </div>
   </div>
+  </transition>
   <div class="row justify-content-center">
     <div v-for="post in posts" :key="post.id" class="category-card mb-4" @click.stop="navigateToPostDetails(post.id)">
       <div>
@@ -109,6 +111,8 @@ watch(catId, (newVal, oldVal) => {
   padding: 20px;
 }
 
+
+
 .new-post-btn {
   position: fixed;
   bottom: 20px;
@@ -121,6 +125,13 @@ watch(catId, (newVal, oldVal) => {
   font-size: 40px;
   cursor: pointer;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  animation: popIn 0.6s ease-out;
+}
+
+.new-post-btn:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
 }
 
 .modal {
@@ -136,11 +147,15 @@ watch(catId, (newVal, oldVal) => {
 }
 
 .modal-content {
-  background-color: white;
-  padding: 20px;
+  background: linear-gradient(135deg, #8E2DE2 0%, #4A00E0 100%);
+  color: white;
+  padding: 30px;
   border-radius: 10px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
   width: 80%;
   max-width: 500px;
+  transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+  transform: translateY(-20px);
 }
 
 .close {
@@ -286,6 +301,18 @@ p {
   }
   50% {
     transform: scale(1.4);
+  }
+}
+
+@keyframes popIn {
+  0% {
+    transform: scale(0);
+  }
+  80% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
   }
 }
 </style>

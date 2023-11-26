@@ -38,7 +38,7 @@ export const useUserStore = defineStore('user', {
             this.isLoading = true;
             this.error = null;
             try {
-                await axios.post('/api/login/', { email, password });
+                await axios.post('/api/login/', {email, password});
                 this.isLoggedIn = true;
             } catch (error) {
                 this.error = error.response ? error.response.data : 'Login failed';
@@ -60,6 +60,26 @@ export const useUserStore = defineStore('user', {
             } finally {
                 this.isLoading = false;
             }
+        },
+        async register(userData) {
+            if (!userData.email || !userData.password) {
+                this.error = 'Email and password are required';
+                return;
+            }
+            this.isLoading = true;
+            this.error = null;
+            try {
+                const response = await axios.post('/api/register/', userData);
+                if (response.status === 201) {
+                    await this.login(userData.email, userData.password);
+                    this.isLoggedIn = true;
+                }
+            } catch (error) {
+                this.error = error.response ? error.response.data : 'Registration failed';
+                this.isLoggedIn = false;
+            } finally {
+                this.isLoading = false;
+            }
         }
-    },
+    }
 });

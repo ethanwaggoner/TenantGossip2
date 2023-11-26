@@ -1,7 +1,7 @@
 <script setup>
 import { ref } from 'vue';
 import { useUserStore } from '@/store/userStore';
-import router from "@/router"; // Adjust the path as necessary
+import router from "@/router";
 
 const email = ref('');
 const confirmEmail = ref('');

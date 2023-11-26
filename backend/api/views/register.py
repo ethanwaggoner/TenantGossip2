@@ -6,7 +6,6 @@ from django.contrib.auth import get_user_model
 from api.serializers import CustomUserSerializer
 
 
-@csrf_exempt
 @api_view(['POST'])
 def register_user(request):
     serializer = CustomUserSerializer(data=request.data)
