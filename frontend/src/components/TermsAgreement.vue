@@ -1,5 +1,16 @@
 <script setup>
+import { useUserStore } from "@/store/userStore";
+import { useRouter } from 'vue-router';
 
+const userStore = useUserStore();
+const router = useRouter();
+
+const agreeToTerms = () => {
+  userStore.acceptTerms();
+
+  const redirect = router.currentRoute.value.query.redirect || '/';
+  router.push({ name: redirect });
+};
 </script>
 
 <template>
@@ -43,12 +54,8 @@
   <p>Violating these terms can lead to account suspension or banning at our discretion. Please contact us if you have any questions.</p>
 
   <div class="buttons">
-    <router-link to="/" style="text-decoration: none; color: inherit;">
-      <div class="back-button">Back</div>
-    </router-link>
-    <router-link to="/forums" style="text-decoration: none; color: inherit;">
-      <div class="agree-button">Agree</div>
-    </router-link>
+    <router-link to="/" class="back-button">Back</router-link>
+    <div class="agree-button" @click="agreeToTerms">Agree</div>
   </div>
 </div>
 </template>

@@ -7,14 +7,27 @@ export const useUserStore = defineStore('user', {
         isLoggedIn: false,
         isLoading: false,
         authCheckComplete: false,
+        termsAccepted: false,
         error: null,
     }),
     getters: {
         isAuthenticated(state) {
             return state.isLoggedIn;
+        },
+
+        areTermsAccepted(state) {
+            return state.termsAccepted;
         }
     },
     actions: {
+        acceptTerms() {
+            this.termsAccepted = true;
+        },
+
+        rejectTerms() {
+            this.termsAccepted = false;
+        },
+
         async checkAuthentication() {
             this.isLoading = true;
             this.error = null;

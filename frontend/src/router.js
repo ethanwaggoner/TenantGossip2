@@ -98,7 +98,14 @@ router.beforeEach(async (to, from, next) => {
     await userStore.checkAuthentication();
   }
 
-  if (to.matched.some(record => record.meta.requiresAuth) && !userStore.isAuthenticated) {
+  const requiresTermAcceptance = ['WriteReview', 'Forums'].includes(to.name);
+  let termsAccepted =  userStore.areTermsAccepted;
+
+  if (requiresTermAcceptance && !termsAccepted) {
+    next({ name: 'Terms', query: { redirect: to.name } });
+  } else if (to.name === 'Terms' && from.name !== 'Home' && to.query.redirect) {
+    next();
+  } else if (to.matched.some(record => record.meta.requiresAuth) && !userStore.isAuthenticated) {
     next({ name: 'Login' });
   } else if (from.name === 'Login' && to.name === 'Home') {
     window.location.href = to.fullPath;
