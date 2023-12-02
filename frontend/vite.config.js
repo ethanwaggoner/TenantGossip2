@@ -13,7 +13,7 @@ export default defineConfig({
   },
   server: {
     https: {
-      key: fs.readFileSync('C:\\Users\\14434\\Desktop\\Programming Projects\\TenantGossip2\\backend\\crypto\\localhost.key'), // Replace with your key file path
+      key: fs.readFileSync('C:\\Users\\14434\\Desktop\\Programming Projects\\TenantGossip2\\backend\\crypto\\localhost.key'),
       cert: fs.readFileSync('C:\\Users\\14434\\Desktop\\Programming Projects\\TenantGossip2\\backend\\crypto\\localhost.cert'),
     },
   },
