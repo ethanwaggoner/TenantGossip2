@@ -79,5 +79,18 @@ export const useReviewsStore = defineStore('reviews', {
                 this.isLoading = false;
             }
         },
+
+        async deleteReview(reviewId) {
+            this.error = null;
+            try {
+                const response = await axios.delete(`/api/reviews/${reviewId}`);
+                if (response.status === 200) {
+                    this.reviews = this.reviews.filter(review => review.id !== reviewId);
+                }
+            } catch (error) {
+                this.error = error.response ? error.response.data : 'Delete failed';
+            }
+        },
+
     },
 });

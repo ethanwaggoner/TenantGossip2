@@ -8,6 +8,8 @@ from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
 from rest_framework import status
 
+from api.models.user import CustomUser
+
 logger = logging.getLogger(__name__)
 
 
@@ -22,7 +24,9 @@ def login_user(request):
         if user is not None:
             login(request, user)
             logger.info(f"User {email} logged in successfully")
-            return Response({'message': 'Login successful'}, status=status.HTTP_200_OK)
+            user = CustomUser.objects.get(email=email)
+            print(user.random_username)
+            return Response({'message': 'Login successful', 'username': str(user.random_username)}, status=status.HTTP_200_OK)
         else:
             logger.warning(f"Login failed for user {email}")
             return Response({'message': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)

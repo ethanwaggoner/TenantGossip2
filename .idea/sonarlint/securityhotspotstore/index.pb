@@ -65,3 +65,19 @@ K
 backend/api/views/review.py,2\7\27089ac3d528b74a0877653441d74c0fb970eeb8
 I
 backend/api/views/auth.py,6\8\68bb9dcb98f6f813b8385f0a37111e1ce99c265f
+[
++frontend/src/components/HomepageSummary.vue,9\a\9a15ad1be4984bf286fb7e81205d5e87e8d4deec
+A
+backend/manage.py,f\f\ffff2748206e8a66c6dd0f11b107b87fc90e0d70
+O
+backend/api/serializers/user.py,9\2\92c3a6f39a3dd3248cd2952864b69fd1a892c864
+L
+backend/api/models/review.py,d\b\dbd8b03fea8490b85fc3daf8db35378876fc08c1
+Q
+!backend/api/serializers/review.py,b\3\b3252574bf24000adee710e659862544fb07be14
+Z
+*frontend/src/components/ReviewsDisplay.vue,b\e\be841c6bcd56270508e3f4a13e747acfbe479832
+S
+#.idea/sonarlint/issuestore/index.pb,9\f\9fe84ebb15faf917b7def6236dba604453cc61e0
+]
+-.idea/sonarlint/securityhotspotstore/index.pb,8\8\88a9255124c95bdc913197c120a8d560edc59c8e

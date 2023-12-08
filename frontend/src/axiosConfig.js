@@ -2,7 +2,7 @@
 import axios from 'axios';
 import Cookies from 'js-cookie';
 
-const API_BASE_URL = 'https://127.0.0.1:8000';
+const API_BASE_URL = 'http://127.0.0.1:8000';
 
 
 axios.defaults.baseURL = API_BASE_URL;

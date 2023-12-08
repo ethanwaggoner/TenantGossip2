@@ -4,6 +4,7 @@ import Cookies from "js-cookie";
 
 export const useUserStore = defineStore('user', {
     state: () => ({
+        user: JSON.parse(localStorage.getItem('user')) || null,
         isLoggedIn: false,
         isLoading: false,
         authCheckComplete: false,
@@ -51,8 +52,10 @@ export const useUserStore = defineStore('user', {
             this.isLoading = true;
             this.error = null;
             try {
-                await axios.post('/api/login/', {email, password});
+                const response = await axios.post('/api/login/', {email, password});
                 this.isLoggedIn = true;
+                this.user = response.data.username;
+                localStorage.setItem('user', JSON.stringify(this.user));
             } catch (error) {
                 this.error = error.response ? error.response.data : 'Login failed';
                 this.isLoggedIn = false;
@@ -68,6 +71,8 @@ export const useUserStore = defineStore('user', {
                 await axios.get('/api/logout/');
                 Cookies.remove('csrftoken');
                 this.isLoggedIn = false;
+                localStorage.removeItem('user');
+                this.user = null;
             } catch (error) {
                 this.error = error.response ? error.response.data : 'Logout failed';
             } finally {

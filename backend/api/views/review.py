@@ -45,6 +45,16 @@ class ReviewViewSet(viewsets.ModelViewSet):
                 logger.error(f"Error in creating a review: {e}", exc_info=True)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+    def delete(self, request, review_id):
+        try:
+            review = Review.objects.get(id=review_id, user=request.user)
+            review.delete()
+            logger.info("Deleted review")
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        except Exception as e:
+            logger.error(f"Error in deleting a review: {e}", exc_info=True)
+
+
     @action(detail=True, methods=['post'])
     @permission_classes([IsAuthenticated])
     def toggle_like(self, request, pk=None):

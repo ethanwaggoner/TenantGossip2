@@ -29,8 +29,21 @@ const toggleLike = async (review) => {
   if (userStore.isAuthenticated) {
     await reviewsStore.toggleLike(review.id);
   }
-
 };
+
+const isAuthor = (review) => {
+  console.log("userStore:" + userStore.user);
+  console.log("reviewAuthor" + review.author_random_username);
+  return userStore.isAuthenticated && userStore.user === review.author_random_username;
+};
+
+const deleteReview = async (reviewId) => {
+  if (confirm('Are you sure you want to delete this review?')) {
+    await reviewsStore.deleteReview(reviewId)
+    emitChangePage(reviewsStore.pagination.currentPage);
+}
+
+}
 
 </script>
 
@@ -46,6 +59,9 @@ const toggleLike = async (review) => {
         <span class="likes">
           <i :class="{'fa': true, 'fa-heart': true, 'liked': review.isLiked}" @click="toggleLike(review)"></i>
           <span>{{ review.num_likes }}</span>
+        </span>
+        <span v-if="isAuthor(review)">
+          <i class="fa fa-trash" @click="deleteReview(review.id)"></i>
         </span>
       </div>
     </div>
@@ -145,6 +161,18 @@ const toggleLike = async (review) => {
 
 .fa-heart.liked {
   animation: heartBounce 0.5s ease;
+}
+
+.fa-trash {
+  color: #ff6b6b;
+  cursor: pointer;
+  margin-left: 10px;
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.fa-trash:hover {
+  color: #ff3b3b;
+  transform: scale(1.1);
 }
 
 @keyframes heartBounce {
