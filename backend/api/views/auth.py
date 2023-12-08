@@ -25,7 +25,6 @@ def login_user(request):
             login(request, user)
             logger.info(f"User {email} logged in successfully")
             user = CustomUser.objects.get(email=email)
-            print(user.random_username)
             return Response({'message': 'Login successful', 'username': str(user.random_username)}, status=status.HTTP_200_OK)
         else:
             logger.warning(f"Login failed for user {email}")
