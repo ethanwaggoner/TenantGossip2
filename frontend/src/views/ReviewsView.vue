@@ -1,7 +1,7 @@
 <script setup>
 import { onMounted, computed, ref } from 'vue';
 import { useReviewsStore } from '@/store/reviewsStore';
-import ReviewsSidebar from '@/components/ReviewsSidebar.vue';
+import ReviewsSideBar from '@/components/ReviewsSideBar.vue';
 import ReviewsDisplay from '@/components/ReviewsDisplay.vue';
 
 const reviewsStore = useReviewsStore();
@@ -85,7 +85,7 @@ const changePage = (page) => {
     <div class="reviews-page col-12">
       <div class="row">
         <div class=col-2>
-          <ReviewsSidebar :states="sortedStates" @stateSelected="fetchReviewsByState" />
+          <ReviewsSideBar :states="sortedStates" @stateSelected="fetchReviewsByState" />
         </div>
         <div class=col-10>
           <ReviewsDisplay :states="sortedStates" :reviews="reviewsStore.reviews" :pagination="reviewsStore.pagination" @changePage="changePage" />
