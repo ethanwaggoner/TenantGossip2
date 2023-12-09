@@ -50,6 +50,9 @@ const deleteReview = async (reviewId) => {
 <template>
   <div class="reviews-list col-8 w-100 h-75">
     <div v-for="review in reviews" :key="review.id" class="review-card w-100">
+      <span v-if="isAuthor(review)">
+        <i class="fa fa-trash" @click="deleteReview(review.id)"></i>
+      </span>
       <h3>{{ review.title }}</h3>
       <p>{{ review.content }}</p>
       <div class="review-details">
@@ -59,9 +62,6 @@ const deleteReview = async (reviewId) => {
         <span class="likes">
           <i :class="{'fa': true, 'fa-heart': true, 'liked': review.isLiked}" @click="toggleLike(review)"></i>
           <span>{{ review.num_likes }}</span>
-        </span>
-        <span v-if="isAuthor(review)">
-          <i class="fa fa-trash" @click="deleteReview(review.id)"></i>
         </span>
       </div>
     </div>
@@ -86,6 +86,7 @@ const deleteReview = async (reviewId) => {
 }
 
 .review-card {
+  position: relative;
   background: linear-gradient(135deg, #8E2DE2 0%, #4A00E0 100%);
   box-shadow: 0 8px 16px rgba(0,0,0,0.3);
   color: white;
@@ -164,6 +165,9 @@ const deleteReview = async (reviewId) => {
 }
 
 .fa-trash {
+  position: absolute;
+  top: 10px;
+  right: 30px;
   color: #ff6b6b;
   cursor: pointer;
   margin-left: 10px;
