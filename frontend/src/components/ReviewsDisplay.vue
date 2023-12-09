@@ -32,8 +32,6 @@ const toggleLike = async (review) => {
 };
 
 const isAuthor = (review) => {
-  console.log("userStore:" + userStore.user);
-  console.log("reviewAuthor" + review.author_random_username);
   return userStore.isAuthenticated && userStore.user === review.author_random_username;
 };
 
