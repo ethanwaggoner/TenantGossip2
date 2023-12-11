@@ -4,7 +4,7 @@ import {computed, ref} from "vue";
 const resources = ref([
   {state: "AL",
   label: "Alabama",
-  image: "/home/mayo/TenantGossip2/frontend/dist/flowers/Alabama.jpg",
+  image: "/flowers/Alabama.jpg",
   links: ["https://www.alabamaag.gov/consumer-complaint/",],
   },
   {state: "AK",
