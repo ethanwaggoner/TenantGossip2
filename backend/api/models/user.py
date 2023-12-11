@@ -16,9 +16,8 @@ def load_words_from_file(file_path):
         return []
 
 
-ADJECTIVES = load_words_from_file(r'C:\Users\14434\Desktop\Programming '
-                                  r'Projects\TenantGossip2\backend\wordlists\adjectives.txt')
-NOUNS = load_words_from_file(r'C:\Users\14434\Desktop\Programming Projects\TenantGossip2\backend\wordlists\nouns.txt')
+ADJECTIVES = load_words_from_file(r'/home/mayo/TenantGossip2/backend/wordlists/adjectives.txt')
+NOUNS = load_words_from_file(r'/home/mayo/TenantGossip2/backend/wordlists/nouns.txt')
 
 
 class CustomUserManager(BaseUserManager):

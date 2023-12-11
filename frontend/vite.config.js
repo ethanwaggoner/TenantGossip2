@@ -11,10 +11,4 @@ export default defineConfig({
       '@': fileURLToPath(new URL('./src', import.meta.url)),
     },
   },
-  server: {
-    https: {
-      key: fs.readFileSync('C:\\Users\\14434\\Desktop\\Programming Projects\\TenantGossip2\\backend\\crypto\\localhost.key'),
-      cert: fs.readFileSync('C:\\Users\\14434\\Desktop\\Programming Projects\\TenantGossip2\\backend\\crypto\\localhost.cert'),
-    },
-  },
 });

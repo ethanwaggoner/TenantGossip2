@@ -17,9 +17,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['127.0.0.1']
+ALLOWED_HOSTS = ['www.tenantgossip.com']
 
 
 # Application definition
@@ -74,8 +74,12 @@ WSGI_APPLICATION = 'app.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': env('NAME'),
+	'USER': env('USER'),
+	'PASSWORD': env('PASSWORD'),
+	'HOST': 'localhost',
+	'PORT': '',
     }
 }
 
@@ -123,15 +127,19 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+USE_X_FORWARDED_HOST = True
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+
 CORS_ALLOW_CREDENTIALS = True
 
 
 CORS_ALLOWED_ORIGINS = [
-    "https://localhost:5173",
+    "https://www.tenantgossip.com",
 ]
 
 CSRF_TRUSTED_ORIGINS = [
-    "https://localhost:5173",
+    "https://www.tenantgossip.com",
 ]
 
 CSRF_USE_SESSIONS = False
@@ -163,7 +171,7 @@ LOGGING = {
     'disable_existing_loggers': False,
     'formatters': {
         'verbose': {
-            'format': '{levelname} {asctime} {module} {message}',
+            'format': '{levelname} {asctime} {module} {message} {exec_info}',
             'style': '{',
         },
         'simple': {

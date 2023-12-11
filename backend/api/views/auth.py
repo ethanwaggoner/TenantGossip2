@@ -10,7 +10,7 @@ from rest_framework import status
 
 from api.models.user import CustomUser
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger('django')
 
 
 @api_view(['POST'])
@@ -30,8 +30,8 @@ def login_user(request):
             logger.warning(f"Login failed for user {email}")
             return Response({'message': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
     except Exception as e:
-        logger.error(f"Error during login: {e}", exc_info=True)
-        return Response({'message': 'Login error'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        logger.exception(f"Error during login {e}")
+        return Response({'message': 'login error'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 @api_view(['GET'])
