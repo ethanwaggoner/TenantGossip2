@@ -98,6 +98,7 @@ const deleteReview = async (reviewId) => {
 .review-card:hover {
   transform: translateY(-3px);
   box-shadow: 0 6px 12px rgba(0,0,0,0.35);
+  cursor: pointer;
 }
 
 .review-card h3 {

@@ -199,6 +199,7 @@ watch(catId, (newVal, oldVal) => {
 .category-card:hover {
   transform: translateY(-5px) rotate(-1deg);
   box-shadow: 0 15px 25px rgba(0,0,0,0.3);
+  cursor: pointer;
 }
 
 .likes {
